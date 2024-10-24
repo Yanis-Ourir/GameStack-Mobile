@@ -5,6 +5,7 @@ export const Colors = {
         gray: '#717880',
         redInput: '#B54548',
         backgroundColor: '#11131F',
+        tabColor: '#171923',
     },
     dark: {
         tint: '#C31432',
@@ -12,5 +13,6 @@ export const Colors = {
         gray: '#717880',
         redInput: '#B54548',
         backgroundColor: '#11131F',
+        tabColor: '#171923',
     }
 }

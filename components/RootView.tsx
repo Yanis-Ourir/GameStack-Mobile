@@ -1,5 +1,5 @@
 import { useThemeColors } from "@/hooks/useThemeColors";
-import { StyleSheet, ViewProps } from "react-native";
+import { StyleSheet, ViewProps, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 

@@ -29,6 +29,6 @@ type Props = TextProps & {
 
 export function ThemedText({ variant, color, style, ...rest }: Props) {
     const colors = useThemeColors();
-    return <Text style={[styles[variant ?? 'body'], { color: colors[color ?? "grayLight"], fontFamily: "Dongle_400Regular" },style]} {...rest} />
+    return <Text style={[styles[variant ?? 'body'], { color: colors[color ?? "grayLight"] }, style]} {...rest} />
 }
 
