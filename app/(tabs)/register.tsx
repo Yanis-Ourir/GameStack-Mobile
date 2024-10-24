@@ -7,7 +7,7 @@ import { Link } from "expo-router";
 import { useState } from "react";
 import { Image, StyleSheet, TextInput, View } from "react-native";
 
-export default function Login() {
+export default function Register() {
     const colors = useThemeColors();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -16,43 +16,51 @@ export default function Login() {
     return (
         <RootView>
             <Image source={require("@/assets/images/place_holder_logo.png")} style={styles.logo} />
-            <ThemedText variant="headline" style={{alignSelf: "center"}}>Login</ThemedText>
+            <ThemedText variant="headline" style={{ alignSelf: "center", paddingTop: 20 }}>Register</ThemedText>
 
             <View style={styles.form}>
                 <View>
-                    <ThemedText>Email : </ThemedText>
-                    <TextInput 
-                        value={email} 
-                        onChangeText={setEmail} 
-                        style={[styles.input, {borderColor: colors.grayLight, backgroundColor: colors.inputBackground}]}
+                    <ThemedText>Pseudo : </ThemedText>
+                    <TextInput
+                        value={email}
+                        onChangeText={setEmail}
+                        style={[styles.input, { borderColor: colors.grayLight, backgroundColor: colors.inputBackground }]}
                         autoCorrect={false}
                         autoCapitalize="none"
-                        />
+                    />
                 </View>
                 <View>
-                    <ThemedText>Password : </ThemedText>                
-                    <TextInput 
-                        value={password} 
-                        onChangeText={setPassword} 
-                        style={[styles.input, { borderColor: colors.grayLight, backgroundColor: colors.inputBackground}]}
+                    <ThemedText>Email : </ThemedText>
+                    <TextInput
+                        value={email}
+                        onChangeText={setEmail}
+                        style={[styles.input, { borderColor: colors.grayLight, backgroundColor: colors.inputBackground }]}
+                        autoCorrect={false}
+                        autoCapitalize="none"
+                    />
+                </View>
+                <View>
+                    <ThemedText>Password : </ThemedText>
+                    <TextInput
+                        value={password}
+                        onChangeText={setPassword}
+                        style={[styles.input, { borderColor: colors.grayLight, backgroundColor: colors.inputBackground }]}
                         secureTextEntry={true}
                         autoCorrect={false}
                         autoCapitalize="none"
-                        />
+                    />
                 </View>
 
-                <ButtonInput label="Login" onPress={() => { }} style={[styles.button, { backgroundColor: colors.redInput }]} />
-                <Link href="/register">
-                    <ThemedText style={{ color: colors.gray }}>Don't have an account yet ? </ThemedText>
+        
+                <ButtonInput label="Register" onPress={() => { }} style={[styles.button, { backgroundColor: colors.redInput }]} />
+                <Link href="/login">
+                    <ThemedText style={{ color: colors.gray }}>Already have an account ? </ThemedText>
                 </Link>
-
-                <ThemedText>My email is : {email}</ThemedText>
-                <ThemedText>My password is : {password}</ThemedText>
             </View>
 
-           
 
-        </RootView>    
+
+        </RootView>
     );
 }
 
