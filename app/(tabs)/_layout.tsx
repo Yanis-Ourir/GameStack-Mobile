@@ -26,9 +26,19 @@ export default function TabLayout() {
             <Tabs.Screen
                 name="(search)"
                 options={{
-                    title: 'search',
+                    title: 'Search',
                     tabBarIcon: ({ color, focused }) => (
                         <Ionicons name={focused ? 'search' : 'search-outline'} color={color} size={24} />
+                    ),
+                }}
+            />
+
+            <Tabs.Screen
+                name="login"
+                options={{
+                    title: 'Profile',
+                    tabBarIcon: ({ color, focused }) => (
+                        <Ionicons name={focused ? 'person' : 'person-outline'} color={color} size={24} />
                     ),
                 }}
             />
