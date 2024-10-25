@@ -3,9 +3,9 @@ import { ThemedText } from '@/components/ThemedText';
 import { Link, Stack } from 'expo-router';
 import { TextInput, View } from 'react-native';
 
-export default function SearchLayout() {
+export default function ProfilLayout() {
     return (
-        <Stack screenOptions={{headerShown: false}}>
+        <Stack screenOptions={{ headerShown: false }}>
             <Stack.Screen name="index" />
         </Stack>
     );

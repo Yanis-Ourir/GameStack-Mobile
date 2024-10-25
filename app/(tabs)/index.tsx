@@ -5,57 +5,12 @@ import { ThemedText } from "@/components/ThemedText";
 import { Image, ScrollView, StyleSheet, Text, View, TouchableOpacity, FlatList } from "react-native";
 import { useThemeColors } from "@/hooks/useThemeColors";
 import { GameDetails } from "@/components/game/GameDetails";
+import { games } from "@/constants/Games";
 
 
 export default function Index() {
   const colors = useThemeColors();
-  const games = [
-    {
-      id: 1,
-      title: 'Granblue Fantasy Relink',
-      platforms: 'PS5, PC, Xbox',
-      tags: 'JRPG, Action, Fantasy',
-      releaseDate: 'Février 2024',
-      rating: 9.8,
-      image: 'https://media.rawg.io/media/screenshots/47b/47b915b28e72ead7a1775f057af421f6.jpeg',
-    },
-    {
-      id: 2,
-      title: 'NieR:Automata',
-      platforms: 'PS4, PC, Xbox',
-      tags: 'JRPG, Aventure, Sci-fi',
-      releaseDate: 'Février 2018',
-      rating: 9.5,
-      image: 'https://media.rawg.io/media/games/5a4/5a44112251d70a25291cc33757220fce.jpg', 
-    },
-    {
-      id: 3,
-      title: 'Elden Ring',
-      platforms: 'PS4, PC, Xbox',
-      tags: 'RPG, Aventure, Fantasy',
-      releaseDate: 'Février 2022',
-      rating: 9.1,
-      image: 'https://media.rawg.io/media/games/b29/b294fdd866dcdb643e7bab370a552855.jpg', 
-    },
-    {
-      id: 4,
-      title: 'Minecraft',
-      platforms: 'PS4, PC, Xbox, Switch',
-      tags: 'RPG, Aventure, Survie',
-      releaseDate: '2012',
-      rating: 9.0,
-      image: 'https://media.rawg.io/media/games/b4e/b4e4c73d5aa4ec66bbf75375c4847a2b.jpg',
-    },
-    {
-      id: 5,
-      title: 'Persona 3 Reload',
-      platforms: 'PS5, PC, Xbox',
-      tags: 'JRPG, Tour par tour, Fantasy',
-      releaseDate: 'Février 2022',
-      rating: 8.8,
-      image: 'https://media.rawg.io/media/games/29a/29a78d7b6be61673c910d588bf188e2c.jpg', 
-    },
-  ];
+  
   return (
     <RootView>
     <ScrollView contentContainerStyle={styles.scrollViewContent}>

@@ -34,7 +34,7 @@ export default function TabLayout() {
             />
 
             <Tabs.Screen
-                name="login"
+                name="(profil)"
                 options={{
                     title: 'Profile',
                     tabBarIcon: ({ color, focused }) => (
@@ -49,6 +49,15 @@ export default function TabLayout() {
                     href: null
                 }}
             />
+
+            <Tabs.Screen
+                name="login"
+                options={{
+                    href: null
+                }}
+            />
+
+
         </Tabs>
     );
 }
