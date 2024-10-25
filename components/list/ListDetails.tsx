@@ -2,6 +2,7 @@ import { Image, StyleSheet, Touchable, TouchableOpacity, View } from "react-nati
 import { ThemedText } from "../ThemedText";
 import { Row } from "../Row";
 import { useThemeColors } from "@/hooks/useThemeColors";
+import { Link } from "expo-router";
 
 
 type Props = {
@@ -16,16 +17,18 @@ type Props = {
 export function ListDetails({ id, title, description, gameCount, image, ...rest }: Props) {
     const colors = useThemeColors();
     return (
-        <TouchableOpacity key={id} style={styles.gameListCard} {...rest}>
-            <Row>
-                <Image source={{ uri: image }} style={styles.gameImage}/>
-                <View>
-                    <ThemedText variant="body">{title}</ThemedText>
-                    <ThemedText variant="body2" style={{color: colors.gray}}>{description}</ThemedText>
-                    <ThemedText variant="body2" style={{color: colors.tint}}>Nombre de jeux : {gameCount}</ThemedText>
-                </View>
-            </Row>
-        </TouchableOpacity>
+        <Link href={{pathname: "./list/[id]", params: {id: id}}} asChild>
+            <TouchableOpacity key={id} style={styles.gameListCard} {...rest}>
+                    <Row>
+                        <Image source={{ uri: image }} style={styles.gameImage}/>
+                        <View>
+                            <ThemedText variant="body">{title}</ThemedText>
+                            <ThemedText variant="body2" style={{color: colors.gray}}>{description}</ThemedText>
+                            <ThemedText variant="body2" style={{color: colors.tint}}>Nombre de jeux : {gameCount}</ThemedText>
+                        </View>
+                    </Row>
+            </TouchableOpacity>
+        </Link>
     )
 }
 

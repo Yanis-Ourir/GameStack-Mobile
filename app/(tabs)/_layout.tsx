@@ -1,4 +1,4 @@
-import { Tabs } from 'expo-router';
+import { Stack, Tabs } from 'expo-router';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useThemeColors } from '@/hooks/useThemeColors';
 
@@ -57,7 +57,12 @@ export default function TabLayout() {
                 }}
             />
 
-
+            <Tabs.Screen
+                name="list/[id]"
+                options={{
+                    href: null
+                }}
+            />
         </Tabs>
     );
 }

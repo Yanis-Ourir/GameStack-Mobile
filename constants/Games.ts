@@ -83,3 +83,50 @@ export const gameLists = [
         image: 'https://media.rawg.io/media/games/5a4/5a44112251d70a25291cc33757220fce.jpg',
     },
 ];
+
+export const gameInList = [
+    {
+        id: 1,
+        title: 'Pokemon Platinum',
+        description: 'Un jeu de rôle incontournable pour les fans de la série Pokemon.',
+        image: 'https://media.rawg.io/media/screenshots/47b/47b915b28e72ead7a1775f057af421f6.jpeg',
+        status: 'Completed',
+    },
+    {
+        id: 2,
+        title: 'Pokemon Platinum',
+        description: 'Un jeu de rôle incontournable pour les fans de la série Pokemon.',
+        image: 'https://media.rawg.io/media/screenshots/47b/47b915b28e72ead7a1775f057af421f6.jpeg',
+        status: 'Completed',
+    },
+    {
+        id: 3,
+        title: 'Pokemon Platinum',
+        description: 'Un jeu de rôle incontournable pour les fans de la série Pokemon.',
+        image: 'https://media.rawg.io/media/screenshots/47b/47b915b28e72ead7a1775f057af421f6.jpeg',
+        status: 'Completed',
+    },
+    {
+        id: 4,
+        title: 'Pokemon Platinum',
+        description: 'Un jeu de rôle incontournable pour les fans de la série Pokemon.',
+        image: 'https://media.rawg.io/media/screenshots/47b/47b915b28e72ead7a1775f057af421f6.jpeg',
+        status: 'Completed',
+    },
+    {
+        id: 5,
+        title: 'Pokemon Platinum',
+        description: 'Un jeu de rôle incontournable pour les fans de la série Pokemon.',
+        image: 'https://media.rawg.io/media/screenshots/47b/47b915b28e72ead7a1775f057af421f6.jpeg',
+        status: 'Completed',
+    },
+    {
+        id: 6,
+        title: 'Pokemon Platinum',
+        description: 'Un jeu de rôle incontournable pour les fans de la série Pokemon.',
+        image: 'https://media.rawg.io/media/screenshots/47b/47b915b28e72ead7a1775f057af421f6.jpeg',
+        status: 'Completed',
+    }
+]
+
+
