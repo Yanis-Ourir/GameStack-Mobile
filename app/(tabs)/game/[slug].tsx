@@ -5,12 +5,14 @@ import { useThemeColors } from "@/hooks/useThemeColors";
 import { useLocalSearchParams } from "expo-router";
 import { FontAwesome } from '@expo/vector-icons'; // Pour afficher des icônes de notation (ex: étoiles)
 import { TouchableOpacity } from 'react-native';
+import { Platform } from '@/components/game/Platform';
+import { Row } from '@/components/Row';
 
 export default function Game() {
     const colors = useThemeColors();
     const params = useLocalSearchParams();
 
-    // Simulation des données du jeu
+    
     const game = {
         id: 1,
         title: 'Super Mario Bros.',
@@ -19,12 +21,23 @@ export default function Game() {
         rating: 4.5,
         releaseDate: '13/09/1985',
         genres: ['Platformer'],
-        platforms: ['NES'],
-        developers: ['Nintendo'],
-        publishers: ['Nintendo'],
+        platforms: [
+            {
+                name: 'NES',
+                icon: 'IoGameControllerOutline',
+            },
+            {
+                name: 'Test',
+                icon: 'IoGameControllerOutline',
+            },
+            {
+                name: 'GameCube',
+                icon: 'IoGameControllerOutline',
+            },
+        ],
     };
 
-    // Simulation des commentaires
+    
     const comments = [
         { id: 1, user: 'JohnDoe', comment: 'An iconic game that defined my childhood!', rating: 5 },
         { id: 2, user: 'JaneGamer', comment: 'Timeless classic, still fun to play.', rating: 4 },
@@ -34,42 +47,44 @@ export default function Game() {
     return (
         <RootView>
             <ScrollView contentContainerStyle={styles.container}>
-                {/* Image du jeu */}
+                
                 <Image source={{ uri: game.image }} style={styles.gameImage} />
 
-                {/* Détails du jeu */}
+                
                 <View style={styles.detailsContainer}>
                     <ThemedText variant="headline" style={styles.title}>
                         {game.title}
                     </ThemedText>
-                    <ThemedText variant="body" style={styles.description}>
+                    <Row gap={8}>
+                        {game.platforms.map(platform => (
+                            <Platform key={platform.name} name={platform.name} icon={platform.icon} />
+                        ))}
+                    </Row>
+
+                    <ThemedText variant="body" style={{color: colors.gray, paddingVertical: 12}}>
                         {game.description}
                     </ThemedText>
 
-                    {/* Informations supplémentaires */}
+                    
                     <View style={styles.infoRow}>
+                        <ThemedText variant="body2" style={{color: colors.gray}}>{game.genres.join(', ')}</ThemedText>
                         <ThemedText variant="body2">Release Date: {game.releaseDate}</ThemedText>
-                        <ThemedText variant="body2">Genres: {game.genres.join(', ')}</ThemedText>
-                        <ThemedText variant="body2">Platforms: {game.platforms.join(', ')}</ThemedText>
-                        <ThemedText variant="body2">Developers: {game.developers.join(', ')}</ThemedText>
-                        <ThemedText variant="body2">Publishers: {game.publishers.join(', ')}</ThemedText>
                     </View>
 
-                    {/* Rating */}
-                    <View style={styles.ratingContainer}>
-                        <ThemedText variant="body">Community Rating: </ThemedText>
-                        <View style={styles.stars}>
-                            {[...Array(Math.round(game.rating))].map((_, index) => (
-                                <FontAwesome key={index} name="star" size={20} color={colors.tint} />
-                            ))}
-                        </View>
-                        <ThemedText variant="body" style={styles.ratingText}>{game.rating.toFixed(1)}</ThemedText>
-                    </View>
+                    
+                    <Row style={{justifyContent: "space-between"}}>
+                        <ThemedText variant="body">Community Rating </ThemedText>
+                        <ThemedText variant="subtitle" style={[{color: colors.tint}]}>{game.rating}</ThemedText>
+                    </Row>
                 </View>
 
-                {/* Commentaires */}
+               
                 <View style={styles.commentsSection}>
+                    
                     <ThemedText variant="headline" style={styles.commentsTitle}>Comments & Reviews</ThemedText>
+                    <TouchableOpacity style={styles.addCommentButton}>
+                        <ThemedText variant="body" style={styles.addCommentText}>Add a Comment</ThemedText>
+                    </TouchableOpacity>
                     {comments.map(comment => (
                         <View key={comment.id} style={styles.commentCard}>
                             <View style={styles.commentHeader}>
@@ -87,10 +102,8 @@ export default function Game() {
                     ))}
                 </View>
 
-                {/* Ajouter un commentaire */}
-                <TouchableOpacity style={styles.addCommentButton}>
-                    <ThemedText variant="body" style={styles.addCommentText}>Add a Comment</ThemedText>
-                </TouchableOpacity>
+               
+                
             </ScrollView>
         </RootView>
     );
