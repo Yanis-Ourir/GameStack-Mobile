@@ -1,20 +1,12 @@
-import { Image, ScrollView, StyleSheet, View } from 'react-native';
+import { Platform } from "@/components/game/Platform";
 import { RootView } from "@/components/RootView";
+import { Row } from "@/components/Row";
 import { ThemedText } from "@/components/ThemedText";
 import { useThemeColors } from "@/hooks/useThemeColors";
-import { Link, useLocalSearchParams } from "expo-router";
-import { FontAwesome } from '@expo/vector-icons'; // Pour afficher des icônes de notation (ex: étoiles)
-import { TouchableOpacity } from 'react-native';
-import { Platform } from '@/components/game/Platform';
-import { Row } from '@/components/Row';
-import EvaluationDetails from '@/components/game/Evaluation';
-import { comments } from '@/constants/Games';
+import { Image, ScrollView, StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
 
-export default function Game() {
+export default function Review() {
     const colors = useThemeColors();
-    const params = useLocalSearchParams();
-
-    
     const game = {
         id: 1,
         title: 'Super Mario Bros.',
@@ -38,15 +30,14 @@ export default function Game() {
             },
         ],
     };
-
     return (
         <RootView>
             <ScrollView contentContainerStyle={styles.container}>
-                
+
                 <Image source={{ uri: game.image }} style={styles.gameImage} />
 
-                
-                <View>
+
+                <View style={styles.detailsContainer}>
                     <ThemedText variant="headline" style={{marginBottom: 8}}>
                         {game.title}
                     </ThemedText>
@@ -56,42 +47,37 @@ export default function Game() {
                         ))}
                     </Row>
 
-                    <ThemedText variant="body" style={{color: colors.gray, paddingVertical: 12}}>
+                    <ThemedText variant="body" style={{ color: colors.gray, paddingVertical: 12 }}>
                         {game.description}
                     </ThemedText>
 
-                    
-                    <Row style={{justifyContent: "space-between"}}>
-                        <ThemedText variant="body2" style={{width: "40%"}}>{game.genres.join(', ')}</ThemedText>
-                        <ThemedText variant="body2" style={{ color: colors.gray }}>Release Date: {game.releaseDate}</ThemedText>
-                    </Row>
-
-                    
-                    <Row style={{justifyContent: "space-between", marginVertical: 12}}>
+                    <Row style={{ justifyContent: "space-between", marginVertical: 8 }}>
                         <ThemedText variant="subtitle">Community Rating </ThemedText>
-                        <ThemedText variant="headline" style={[{color: colors.tint}]}>{game.rating}</ThemedText>
+                        <ThemedText variant="headline" style={[{ color: colors.tint }]}>{game.rating}</ThemedText>
                     </Row>
                 </View>
 
-               
-                <View style={styles.commentsSection}>
-                    
-                    <ThemedText variant="headline">Reviews</ThemedText>
-                    <Link href="/review/NieR:Automata" asChild>
-                        <TouchableOpacity style={styles.addCommentButton}>
-                            <ThemedText variant="body" style={styles.addCommentText}>Add a Review</ThemedText>
-                        </TouchableOpacity>
-                    </Link>
-                    {comments.map(comment => (
-                      <EvaluationDetails key={comment.id} evaluation={comment} />
-                    ))}
+                <View>
+                    <ThemedText variant="subtitle">Create your review</ThemedText>
+                    <TextInput
+                        placeholder="Write your review here..."
+                        multiline
+                        style={{
+                            backgroundColor: '#171923',
+                            color: '#f5f5f5',
+                            padding: 10,
+                            borderRadius: 8,
+                            marginBottom: 10,
+                        }}
+                    />
+                    <TouchableOpacity style={styles.addReviewButton}>
+                        <ThemedText variant="body" style={styles.addReviewText}>Add a Review</ThemedText>
+                    </TouchableOpacity>
                 </View>
-
-               
-                
             </ScrollView>
         </RootView>
-    );
+
+    )
 }
 
 const styles = StyleSheet.create({
@@ -105,17 +91,17 @@ const styles = StyleSheet.create({
         borderRadius: 12,
         marginBottom: 8,
     },
-    commentsSection: {
-        marginTop: 20,
+    detailsContainer: {
+        marginBottom: 20,
     },
-    addCommentButton: {
+    addReviewButton: {
         marginVertical: 10,
         backgroundColor: '#C31432',
         paddingVertical: 12,
         borderRadius: 50,
         alignItems: 'center',
     },
-    addCommentText: {
+    addReviewText: {
         color: '#fff',
         fontWeight: 'bold',
     },
