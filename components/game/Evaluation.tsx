@@ -48,13 +48,13 @@ export default function EvaluationDetails({ evaluation }: Props) {
                 )}
              
                 <View style={styles.infoContainer}>
-                    <Row>
+                    <Row gap={4}>
                         <ThemedText variant="body">{evaluation.user.pseudo}</ThemedText>
-                        {/* <Row style={styles.platforms}>
+                        <Row gap={4}>
                             {evaluation.platforms.map((platform, index) => (
                                 <Platform key={index} name={platform.name} icon={platform.icon} />
                             ))}
-                        </Row> */}
+                        </Row>
                     </Row>
                     <Row style={{}}>
                         <Row gap={4}>
@@ -64,19 +64,16 @@ export default function EvaluationDetails({ evaluation }: Props) {
                         <ThemedText variant="body2" style={{color: colors.gray}}> - {evaluation.game_time} heures</ThemedText>
                     </Row>
                 
-                    <ThemedText variant="body2" style={{marginTop: 12, width: "80%"}}>{evaluation.description}</ThemedText>
                 </View>
                 <ThemedText variant="headline" style={{ color: colors.tint }}>{evaluation.rating}</ThemedText>
             </Row>
+                    <ThemedText variant="body2" style={{marginTop: 12}}>{evaluation.description}</ThemedText>
         </View>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
-        flexDirection: "row",
-        justifyContent: "space-between",
-        alignItems: "center",
         paddingVertical: 12,
         borderBottomWidth: 1,
         borderBottomColor: "gray",

@@ -185,7 +185,7 @@ export const comments = [
         platforms: [
             { name: "NES", icon: "IoGameControllerOutline" }
         ],
-        description: 'A bit outdated, but still a legend in gaming.',
+        description: 'A bit outdated, but still a legend in gaming. A must-play for any gamer.',
     },
 ];
 
