@@ -7,6 +7,8 @@ import { FontAwesome } from '@expo/vector-icons'; // Pour afficher des icônes d
 import { TouchableOpacity } from 'react-native';
 import { Platform } from '@/components/game/Platform';
 import { Row } from '@/components/Row';
+import EvaluationDetails from '@/components/game/Evaluation';
+import { comments } from '@/constants/Games';
 
 export default function Game() {
     const colors = useThemeColors();
@@ -20,7 +22,7 @@ export default function Game() {
         image: 'https://media.rawg.io/media/games/5a4/5a44112251d70a25291cc33757220fce.jpg',
         rating: 4.5,
         releaseDate: '13/09/1985',
-        genres: ['Platformer'],
+        genres: ['Platformer', 'Adventure', 'RPG', 'Action', 'Arcade'],
         platforms: [
             {
                 name: 'NES',
@@ -36,13 +38,6 @@ export default function Game() {
             },
         ],
     };
-
-    
-    const comments = [
-        { id: 1, user: 'JohnDoe', comment: 'An iconic game that defined my childhood!', rating: 5 },
-        { id: 2, user: 'JaneGamer', comment: 'Timeless classic, still fun to play.', rating: 4 },
-        { id: 3, user: 'PlayerOne', comment: 'A bit outdated, but still a legend in gaming.', rating: 4 },
-    ];
 
     return (
         <RootView>
@@ -66,39 +61,27 @@ export default function Game() {
                     </ThemedText>
 
                     
-                    <View style={styles.infoRow}>
-                        <ThemedText variant="body2" style={{color: colors.gray}}>{game.genres.join(', ')}</ThemedText>
-                        <ThemedText variant="body2">Release Date: {game.releaseDate}</ThemedText>
-                    </View>
+                    <Row style={{justifyContent: "space-between"}}>
+                        <ThemedText variant="body2" style={{width: "40%"}}>{game.genres.join(', ')}</ThemedText>
+                        <ThemedText variant="body2" style={{ color: colors.gray }}>Release Date: {game.releaseDate}</ThemedText>
+                    </Row>
 
                     
-                    <Row style={{justifyContent: "space-between"}}>
-                        <ThemedText variant="body">Community Rating </ThemedText>
-                        <ThemedText variant="subtitle" style={[{color: colors.tint}]}>{game.rating}</ThemedText>
+                    <Row style={{justifyContent: "space-between", marginVertical: 12}}>
+                        <ThemedText variant="subtitle">Community Rating </ThemedText>
+                        <ThemedText variant="headline" style={[{color: colors.tint}]}>{game.rating}</ThemedText>
                     </Row>
                 </View>
 
                
                 <View style={styles.commentsSection}>
                     
-                    <ThemedText variant="headline" style={styles.commentsTitle}>Comments & Reviews</ThemedText>
+                    <ThemedText variant="headline">Reviews</ThemedText>
                     <TouchableOpacity style={styles.addCommentButton}>
-                        <ThemedText variant="body" style={styles.addCommentText}>Add a Comment</ThemedText>
+                        <ThemedText variant="body" style={styles.addCommentText}>Add a Review</ThemedText>
                     </TouchableOpacity>
                     {comments.map(comment => (
-                        <View key={comment.id} style={styles.commentCard}>
-                            <View style={styles.commentHeader}>
-                                <ThemedText variant="body2" style={styles.commentUser}>{comment.user}</ThemedText>
-                                <View style={styles.stars}>
-                                    {[...Array(comment.rating)].map((_, index) => (
-                                        <FontAwesome key={index} name="star" size={16} color={colors.tint} />
-                                    ))}
-                                </View>
-                            </View>
-                            <ThemedText variant="body2" style={styles.commentText}>
-                                {comment.comment}
-                            </ThemedText>
-                        </View>
+                      <EvaluationDetails key={comment.id} evaluation={comment} />
                     ))}
                 </View>
 
@@ -175,10 +158,10 @@ const styles = StyleSheet.create({
         color: '#f5f5f5',
     },
     addCommentButton: {
-        marginTop: 20,
+        marginVertical: 10,
         backgroundColor: '#C31432',
         paddingVertical: 12,
-        borderRadius: 8,
+        borderRadius: 50,
         alignItems: 'center',
     },
     addCommentText: {

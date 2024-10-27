@@ -1,14 +1,30 @@
 import { useThemeColors } from "@/hooks/useThemeColors";
 import { Ionicons, SimpleLineIcons } from "@expo/vector-icons";
 
+type Props = {
+    icon: string | undefined;
+    color?: string;
+}
 
-export default function DynamicIcon({ icon }: { icon: string | undefined }) {
-    // @ts-ignore
+type IoniconName = "trash-outline" | "game-controller-outline" | "checkmark-circle" | "add-circle-outline" | "play";
 
-    if(icon === 'IoGameControllerOutline') {
-        return <Ionicons name="game-controller-outline" size={20} color="white" />;
+
+export default function DynamicIcon({ icon, color }: Props) {
+    const colors = useThemeColors();
+
+    const iconsConverter: { [key: string]: string } = {
+        'IoTrashOutline': 'trash-outline',
+        'IoGameControllerOutline': 'game-controller-outline',
+        'IoCheckmarkCircleOutline': 'checkmark-circle',
+        'IoAddCircleOutline': 'add-circle-outline',
+        'IoPlay': 'play',
     }
 
-    return <SimpleLineIcons name="screen-desktop" size={20} color="white" />;
+
+    if(icon && iconsConverter[icon]) {
+        return <Ionicons name={iconsConverter[icon] as IoniconName} size={20} color={color ? color : colors.grayLight} />;
+    }
+
+    return <SimpleLineIcons name="screen-desktop" size={20} color={color ? color : colors.grayLight} />;
 
 }

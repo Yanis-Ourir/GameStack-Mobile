@@ -129,4 +129,65 @@ export const gameInList = [
     }
 ]
 
+export const comments = [
+    {
+        id: 1,
+        user: {
+            avatar: {
+                url: "https://example.com/avatar-johndoe.jpg",  // URL de l'avatar de l'utilisateur
+            },
+            pseudo: 'JohnDoe',
+        },
+        rating: 5,
+        status: {
+            color: "text-red-400",  
+            icon: "IoTrashOutline",      // Icône associée (exemple)
+            name: "Dropped",
+        },
+        game_time: 120, // Exemple d'heures de jeu
+        platforms: [
+            { name: "NES", icon: "IoGameControllerOutline" }
+        ],
+        description: 'An iconic game that defined my childhood!',
+    },
+    {
+        id: 2,
+        user: {
+            avatar: {
+                url: "https://example.com/avatar-janegamer.jpg",
+            },
+            pseudo: 'JaneGamer',
+        },
+        rating: 4,
+        status: {
+            color: "text-green-500",
+            icon: "IoCheckmarkCircleOutline",
+            name: "Completed",
+        },
+        game_time: 85,
+        platforms: [
+            { name: "SNES", icon: "IoGameControllerOutline" }
+        ],
+        description: 'Timeless classic, still fun to play.',
+    },
+    {
+        id: 3,
+        user: {
+            pseudo: 'PlayerOne',
+        },
+        rating: 4,
+        status: {
+            color: "text-gray-400",
+            icon: "IoPlay",
+            name: "Nostalgique",
+        },
+        game_time: 60,
+        platforms: [
+            { name: "NES", icon: "IoGameControllerOutline" }
+        ],
+        description: 'A bit outdated, but still a legend in gaming.',
+    },
+];
+
+
 
