@@ -21,7 +21,7 @@ export function ListDetails({ id, title, description, gameCount, image, ...rest 
             <TouchableOpacity key={id} style={styles.gameListCard} {...rest}>
                     <Row>
                         <Image source={{ uri: image }} style={styles.gameImage}/>
-                        <View>
+                        <View style={{width: '80%'}}>
                             <ThemedText variant="body">{title}</ThemedText>
                             <ThemedText variant="body2" style={{color: colors.gray}}>{description}</ThemedText>
                             <ThemedText variant="body2" style={{color: colors.tint}}>Nombre de jeux : {gameCount}</ThemedText>
@@ -34,11 +34,11 @@ export function ListDetails({ id, title, description, gameCount, image, ...rest 
 
 const styles = StyleSheet.create({
     gameListCard: {
-        backgroundColor: '#171923',
         borderRadius: 12,
-        marginBottom: 15,
         padding: 10,
         alignItems: 'center',
+        borderBottomWidth: 1,
+        borderBottomColor: '#333',
     },
     gameImage: {
         width: 100,

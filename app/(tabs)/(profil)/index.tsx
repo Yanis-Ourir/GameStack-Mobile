@@ -115,9 +115,10 @@ const styles = StyleSheet.create({
     },
     newListButton: {
         backgroundColor: '#C31432',
-        borderRadius: 12,
+        borderRadius: 50,
         padding: 15,
         alignItems: 'center',
+        marginBottom: 32,
     },
     newListText: {
         color: '#F5F5F5',

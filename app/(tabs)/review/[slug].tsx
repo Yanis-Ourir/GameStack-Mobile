@@ -89,7 +89,6 @@ export default function Review() {
                                     icon={status.icon} 
                                     value={false} 
                                     color={status.color}
-                                    style={{width: 200}}
                                 />
                             ))}
                     </View>
