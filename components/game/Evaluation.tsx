@@ -50,7 +50,7 @@ export default function EvaluationDetails({ evaluation }: Props) {
                 <View style={styles.infoContainer}>
                     <Row gap={4}>
                         <ThemedText variant="body">{evaluation.user.pseudo}</ThemedText>
-                        <Row gap={4}>
+                        <Row gap={8}>
                             {evaluation.platforms.map((platform, index) => (
                                 <Platform key={index} name={platform.name} icon={platform.icon} />
                             ))}
