@@ -20,11 +20,17 @@ export default function DynamicIcon({ icon, color }: Props) {
         'IoPlay': 'play',
     }
 
-
-    if(icon && iconsConverter[icon]) {
-        return <Ionicons name={iconsConverter[icon] as IoniconName} size={20} color={color ? color : colors.grayLight} />;
+    const tailwindColorsToHex: { [key: string]: string } = {
+        'text-red-400': colors.tint,
+        'text-gray-400': colors.gray,
+        'text-green-500': colors.green,
     }
 
-    return <SimpleLineIcons name="screen-desktop" size={20} color={color ? color : colors.grayLight} />;
+
+    if(icon && iconsConverter[icon]) {
+        return <Ionicons name={iconsConverter[icon] as IoniconName} size={20} color={color ? tailwindColorsToHex[color] : colors.grayLight} />;
+    }
+
+    return <SimpleLineIcons name="screen-desktop" size={20} color={color ? tailwindColorsToHex[color] : colors.grayLight} />;
 
 }

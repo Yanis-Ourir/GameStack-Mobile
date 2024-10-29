@@ -38,6 +38,8 @@ export default function EvaluationDetails({ evaluation }: Props) {
         'text-green-500': colors.green,
     }
 
+    const filteredEvaluations = evaluation.platforms.filter((evaluation, index) => index < 2);
+
     return (
         <View style={styles.container}>
             <Row>
@@ -48,18 +50,18 @@ export default function EvaluationDetails({ evaluation }: Props) {
                 )}
              
                 <View style={styles.infoContainer}>
-                    <Row gap={4}>
+                    <Row gap={8}>
                         <ThemedText variant="body">{evaluation.user.pseudo}</ThemedText>
-                        <Row gap={8}>
-                            {evaluation.platforms.map((platform, index) => (
+                        <Row gap={4}>
+                            {filteredEvaluations.map((platform, index) => (
                                 <Platform key={index} name={platform.name} icon={platform.icon} />
                             ))}
                         </Row>
                     </Row>
                     <Row style={{}}>
                         <Row gap={4}>
-                            <DynamicIcon icon={evaluation.status.icon} color={tailwindColorsToHex[evaluation.status.color]}/>
-                            <ThemedText variant="body2" style={{ color: tailwindColorsToHex[evaluation.status.color] }}>{evaluation.status.name}</ThemedText>
+                            <DynamicIcon icon={evaluation.status.icon} color={evaluation.status.color}/>
+                            <ThemedText variant="body2" style={{ color: tailwindColorsToHex[evaluation.status.color]}}>{evaluation.status.name}</ThemedText>
                         </Row>
                         <ThemedText variant="body2" style={{color: colors.gray}}> - {evaluation.game_time} heures</ThemedText>
                     </Row>

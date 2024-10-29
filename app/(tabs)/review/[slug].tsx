@@ -1,7 +1,9 @@
+import { CustomCheckBox } from "@/components/CustomCheckBox";
 import { Platform } from "@/components/game/Platform";
 import { RootView } from "@/components/RootView";
 import { Row } from "@/components/Row";
 import { ThemedText } from "@/components/ThemedText";
+import { statuses } from "@/constants/Games";
 import { useThemeColors } from "@/hooks/useThemeColors";
 import { Image, ScrollView, StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
 
@@ -57,18 +59,46 @@ export default function Review() {
                     </Row>
                 </View>
 
-                <View>
+                <View style={styles.formReview}>
                     <ThemedText variant="subtitle">Create your review</ThemedText>
                     <TextInput
+                        placeholder="Rate this game (0-10)"
+                        keyboardType="numeric"
+                        placeholderTextColor={colors.gray}
+                        style={styles.numberInput}
+                        maxLength={10}
+                    />
+                    <Row gap={8} style={{paddingVertical: 24}}>
+                        {game.platforms.map(platform => (
+                            <CustomCheckBox key={platform.name} label={platform.name} icon={platform.icon} value={false} />
+                        ))}
+                    </Row>
+
+                    <TextInput
+                        placeholder="How long did you play this game? (in hours)"
+                        keyboardType="numeric"
+                        placeholderTextColor={colors.gray}
+                        style={styles.numberInput}
+                    />
+
+                    <View style={styles.statusGrid}>
+                            {statuses.map(status => (
+                                <CustomCheckBox 
+                                    key={status.name} 
+                                    label={status.name} 
+                                    icon={status.icon} 
+                                    value={false} 
+                                    color={status.color}
+                                    style={{width: 200}}
+                                />
+                            ))}
+                    </View>
+                  
+                    <TextInput
                         placeholder="Write your review here..."
+                        placeholderTextColor={colors.gray}
                         multiline
-                        style={{
-                            backgroundColor: '#171923',
-                            color: '#f5f5f5',
-                            padding: 10,
-                            borderRadius: 8,
-                            marginBottom: 10,
-                        }}
+                        style={styles.textArea}
                     />
                     <TouchableOpacity style={styles.addReviewButton}>
                         <ThemedText variant="body" style={styles.addReviewText}>Add a Review</ThemedText>
@@ -93,6 +123,39 @@ const styles = StyleSheet.create({
     },
     detailsContainer: {
         marginBottom: 20,
+    },
+    formReview: {
+        backgroundColor: 'rgb(17 24 39)',
+        paddingHorizontal: 12,
+        paddingVertical: 20,
+        borderRadius: 12,
+    },
+    numberInput: {
+        backgroundColor: '#171923',
+        color: '#f5f5f5',
+        padding: 10,
+        borderRadius: 8,
+        marginTop: 10,
+        borderWidth: 1,
+        borderColor: '#333',
+    },
+    statusGrid: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        gap: 12,
+        paddingVertical: 24,
+        justifyContent: 'center'
+    },
+    textArea: {
+        backgroundColor: '#171923',
+        color: '#f5f5f5',
+        padding: 10,
+        borderRadius: 8,
+        marginBottom: 10,
+        minHeight: 100,
+        textAlignVertical: 'top',
+        borderWidth: 1,
+        borderColor: '#333',
     },
     addReviewButton: {
         marginVertical: 10,

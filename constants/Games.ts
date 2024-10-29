@@ -183,11 +183,41 @@ export const comments = [
         },
         game_time: 60,
         platforms: [
-            { name: "NES", icon: "IoGameControllerOutline" }
+            { name: "NES", icon: "IoGameControllerOutline" },
+            { name: "NES", icon: "IoGameControllerOutline" },
+            { name: "NES", icon: "IoGameControllerOutline" },
+            { name: "NES", icon: "IoGameControllerOutline" },
         ],
         description: 'A bit outdated, but still a legend in gaming. A must-play for any gamer.',
     },
 ];
+
+export const statuses = [
+    {
+        id: 1,
+        name: 'Completed',
+        color: 'text-green-500',
+        icon: 'IoCheckmarkCircleOutline',
+    },
+    {
+        id: 2,
+        name: 'In Progress',
+        color: 'text-white',
+        icon: 'IoPlay',
+    },
+    {
+        id: 3,
+        name: 'Dropped',
+        color: 'text-red-400',
+        icon: 'IoTrashOutline',
+    },
+    {
+        id: 4,
+        name: 'Want to Play',
+        color: 'text-gray-400',
+        icon: 'IoAddCircleOutline',
+    }
+]
 
 
 
