@@ -9,35 +9,32 @@ import { Platform } from '@/components/game/Platform';
 import { Row } from '@/components/Row';
 import EvaluationDetails from '@/components/game/Evaluation';
 import { comments } from '@/constants/Games';
+import { findGameBySlug, GameProps } from '@/functions/game';
 
 export default function Game() {
     const colors = useThemeColors();
     const params = useLocalSearchParams();
+    const { isPending, isError, data, error } = findGameBySlug('the-legend-of-zelda-the-wind-waker');
 
-    
-    const game = {
-        id: 1,
-        title: 'Super Mario Bros.',
-        description: 'Super Mario Bros. is a platform game developed and published by Nintendo. Players control Mario, or his brother Luigi in multiplayer mode, as they travel the Mushroom Kingdom to rescue Princess Toadstool from Bowser.',
-        image: 'https://media.rawg.io/media/games/5a4/5a44112251d70a25291cc33757220fce.jpg',
-        rating: 4.5,
-        releaseDate: '13/09/1985',
-        genres: ['Platformer', 'Adventure', 'RPG', 'Action', 'Arcade'],
-        platforms: [
-            {
-                name: 'NES',
-                icon: 'IoGameControllerOutline',
-            },
-            {
-                name: 'Test',
-                icon: 'IoGameControllerOutline',
-            },
-            {
-                name: 'GameCube',
-                icon: 'IoGameControllerOutline',
-            },
-        ],
-    };
+    if (isPending) {
+        return (
+            <RootView style={{justifyContent: 'center', alignItems: 'center'}}>
+                <ThemedText>Loading...</ThemedText>
+            </RootView>
+        );
+    }
+
+    if (isError) {
+        return (
+            <RootView style={{justifyContent: 'center', alignItems: 'center'}}>
+                <ThemedText>Error: {error.message}</ThemedText>
+            </RootView>
+        );
+    }
+
+    const game = data;
+    console.log(game);
+
 
     return (
         <RootView>
@@ -48,7 +45,7 @@ export default function Game() {
                 
                 <View>
                     <ThemedText variant="headline" style={{marginBottom: 8}}>
-                        {game.title}
+                        {game.name}
                     </ThemedText>
                     <Row gap={8}>
                         {game.platforms.map(platform => (
@@ -62,7 +59,7 @@ export default function Game() {
 
                     
                     <Row style={{justifyContent: "space-between"}}>
-                        <ThemedText variant="body2" style={{width: "40%"}}>{game.genres.join(', ')}</ThemedText>
+                        <ThemedText variant="body2" style={{width: "40%"}}>{game.tags.join(', ')}</ThemedText>
                         <ThemedText variant="body2" style={{ color: colors.gray }}>Release Date: {game.releaseDate}</ThemedText>
                     </Row>
 
