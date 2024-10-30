@@ -14,7 +14,7 @@ import { findGameBySlug, GameProps } from '@/functions/game';
 export default function Game() {
     const colors = useThemeColors();
     const params = useLocalSearchParams();
-    const { isPending, isError, data, error } = findGameBySlug('the-legend-of-zelda-the-wind-waker');
+    const { isPending, isError, data, error } = findGameBySlug(params.slug);
 
     if (isPending) {
         return (
@@ -33,8 +33,6 @@ export default function Game() {
     }
 
     const game = data;
-    console.log(game);
-
 
     return (
         <RootView>

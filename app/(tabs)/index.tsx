@@ -5,11 +5,29 @@ import { ThemedText } from "@/components/ThemedText";
 import { Image, ScrollView, StyleSheet, Text, View, TouchableOpacity, FlatList } from "react-native";
 import { useThemeColors } from "@/hooks/useThemeColors";
 import { GameDetails } from "@/components/game/GameDetails";
-import { games } from "@/constants/Games";
+import { findTopTenGames, GameProps } from "@/functions/game";
 
 
 export default function Index() {
   const colors = useThemeColors();
+  const {isPending, isError, data, error} = findTopTenGames();
+  if(isPending) {
+    return (
+      <RootView style={{justifyContent: "center", alignItems: "center"}}>
+        <ThemedText>Loading...</ThemedText>
+      </RootView>
+    );
+  }
+
+  if(isError) {
+    return (
+      <RootView style={{justifyContent: "center", alignItems: "center"}}>
+        <ThemedText>Error: {error.message}</ThemedText>
+      </RootView>
+    );
+  }
+
+  const games: GameProps[] = data;
   
   return (
     <RootView>
@@ -51,12 +69,13 @@ export default function Index() {
             <GameDetails
               key={game.id}
               id={game.id}
-              title={game.title}
+              title={game.name}
               platforms={game.platforms}
               tags={game.tags}
               releaseDate={game.releaseDate}
               rating={game.rating}
               image={game.image}
+              slug={game.slug}
               />
             );
           })}
@@ -103,7 +122,7 @@ const styles = StyleSheet.create({
   },
   ctaButton: {
     paddingVertical: 15,
-    borderRadius: 10,
+    borderRadius: 50,
     alignItems: "center",
     marginVertical: 30,
   },
