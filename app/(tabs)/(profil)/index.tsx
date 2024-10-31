@@ -2,9 +2,10 @@ import { ListDetails } from '@/components/list/ListDetails';
 import { RootView } from '@/components/RootView';
 import { ThemedText } from '@/components/ThemedText';
 import { gameLists } from '@/constants/Games';
-import { checkToken } from '@/functions/auth';
+import { checkToken, TokenProps } from '@/functions/auth';
 import { findUserById, UserProps } from '@/functions/user';
 import { useThemeColors } from '@/hooks/useThemeColors';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import { View, Text, Image, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
@@ -12,84 +13,94 @@ import { View, Text, Image, StyleSheet, ScrollView, TouchableOpacity } from 'rea
 export default function ProfilIndex() {
     const router = useRouter();
     const colors = useThemeColors();
-    const { isPending, isError, data, error } = findUserById('9d3e0b5e-ab86-4d0b-83e6-97cc1cc79fe5');
+    const [user, setUser] = useState<UserProps>();
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState<Error | null>(null);
 
-    const handleButton = () => {
-        console.log('New list button pressed'); 
-        checkToken();
-    }
 
-    if(isPending) {
+    useEffect(() => {
+        console.log('New list button pressed');
+
+        async function fetchData() {
+            const token = await checkToken();
+            if (!token) {
+                router.push('/login');
+                return;
+            }
+
+            try {
+                const user = await findUserById(token.id);
+                setUser(user);
+            } catch (error: any) {
+                setError(error);
+                console.log('Error:', error);
+            } finally {
+                setIsLoading(false);
+            }
+        }
+        fetchData();
+       
+    }, []);
+
+    if(isLoading) {
         return (
             <RootView>
                 <ThemedText>Loading...</ThemedText>
             </RootView>
-        )
+        );
     }
 
-    if(isError) {
-        return (
-            <RootView>
-                <ThemedText>Error: {error.message}</ThemedText>
-            </RootView>
-        )
-    }
 
-    const user = data as UserProps;
-
-    
-
-   
     return (
         <RootView>
-        <ScrollView style={styles.container}>
+            <ScrollView style={styles.container}>
 
-            <View style={styles.profileContainer}>
-                <Image source={require('@/assets/static_images/icon-default.jpg')} style={styles.profileImage} />
-                <ThemedText variant="subtitle">{user?.pseudo}</ThemedText>
-                <ThemedText variant='body2' style={{color: colors.gray, marginTop: 12}}>
-                    {user?.description ? user.description : 'Pas de description'}
-                </ThemedText>
-            </View>
+                <View style={styles.profileContainer}>
+                    <Image source={require('@/assets/static_images/icon-default.jpg')} style={styles.profileImage} />
+                    <ThemedText variant="subtitle">{user?.pseudo}</ThemedText>
+                    <ThemedText variant='body2' style={{ color: colors.gray, marginTop: 12 }}>
+                        {user?.description ? user.description : 'Pas de description'}
+                    </ThemedText>
+                </View>
 
-    
-            <View style={styles.tabContainer}>
-                <TouchableOpacity style={styles.tab}>
-                    <ThemedText>Listes</ThemedText>
+
+                <View style={styles.tabContainer}>
+                    <TouchableOpacity style={styles.tab}>
+                        <ThemedText>Listes</ThemedText>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.tab}>
+                        <ThemedText>Évaluations</ThemedText>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.tab}>
+                        <ThemedText>Favoris</ThemedText>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.tab}>
+                        <ThemedText>Stats</ThemedText>
+                    </TouchableOpacity>
+                </View>
+
+                <View style={styles.searchContainer}>
+                    <ThemedText variant="body" style={{ color: colors.gray }}>🔍 Chercher une liste</ThemedText>
+                </View>
+
+
+                <View style={styles.listContainer}>
+                    {gameLists.map((list) => (
+                        <ListDetails
+                            key={list.id}
+                            id={list.id}
+                            title={list.title}
+                            description={list.description}
+                            gameCount={list.gameCount}
+                            image={list.image}
+                        />
+                    ))}
+                </View>
+
+                <TouchableOpacity style={styles.newListButton}>
+                    <Text style={styles.newListText}>+ Nouvelle liste</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.tab}>
-                    <ThemedText>Évaluations</ThemedText>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.tab}>
-                    <ThemedText>Favoris</ThemedText>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.tab}>
-                    <ThemedText>Stats</ThemedText>
-                </TouchableOpacity>
-            </View>
-
-            <View style={styles.searchContainer}>
-                <ThemedText variant="body" style={{color: colors.gray}}>🔍 Chercher une liste</ThemedText>
-            </View>
-
-
-            <View style={styles.listContainer}>
-                {gameLists.map((list) => (
-                    <ListDetails
-                        key={list.id}
-                        id={list.id}
-                        title={list.title}
-                        description={list.description}
-                        gameCount={list.gameCount}
-                        image={list.image}
-                    />
-                ))}
-            </View>
-
-            <TouchableOpacity style={styles.newListButton} onPress={handleButton}>
-                <Text style={styles.newListText}>+ Nouvelle liste</Text>
-            </TouchableOpacity>
-        </ScrollView>
+            </ScrollView>
         </RootView>
     );
 };

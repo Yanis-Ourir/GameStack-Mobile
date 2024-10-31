@@ -1,10 +1,9 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useMutation } from "@tanstack/react-query";
-import { Redirect } from "expo-router";
 
 const endpoint = process.env.EXPO_PUBLIC_API;
-
-type TokenProps = {
+const key = process.env.EXPO_PUBLIC_JWT_KEY;
+const Buffer = require('buffer/').Buffer;
+export type TokenProps = {
     id: string,
     pseudo: string,
     exp: number,
@@ -38,25 +37,28 @@ export async function login(email: string, password: string) {
 
 export async function checkToken(): Promise<TokenProps> {
     const token = await AsyncStorage.getItem('token');
+    console.log('Token :', token);
     if (!token) {
         throw new Error('No token found');
     }
-    console.log("token: ",  parseJWT(token));
-    return parseJWT(token);
+    const payloadToken = parseJWT(token);
+    return payloadToken as TokenProps;
 }
 
-function parseJWT(token: string) {
-    console.log("token: ", token);
-    const base64Url = token.split('.')[1];
-    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-    const jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function (c) {
-        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-    }).join(''));
-
-    console.log("jsonPayload: ", JSON.parse(jsonPayload));
-    return JSON.parse(jsonPayload);
+export default function parseJWT(token: string): any {
+    try {
+        const base64Payload = token.split('.')[1];
+        const payload = Buffer.from(base64Payload, 'base64');
+        return JSON.parse(payload.toString());
+    } catch (e) {
+        console.log(e);
+        return null;
+    }
 }
+
 
 export async function logout() {
     AsyncStorage.removeItem('token');
 }
+
+
