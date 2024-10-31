@@ -1,16 +1,29 @@
 import { ButtonInput } from "@/components/ButtonInput";
 import { CustomInput } from "@/components/CustomInput";
 import { RootView } from "@/components/RootView";
+import { Row } from "@/components/Row";
 import { ThemedText } from "@/components/ThemedText";
+import { login } from "@/functions/auth";
 import { useThemeColors } from "@/hooks/useThemeColors";
-import { Link } from "expo-router";
+import { Link, useRouter } from "expo-router";
 import { useState } from "react";
 import { Image, StyleSheet, TextInput, View } from "react-native";
 
 export default function Login() {
+    const router = useRouter();
     const colors = useThemeColors();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+
+    function handleSubmit() {
+        console.log("Login with email : ", email, " and password : ", password);
+        try {
+            login(email, password);
+            router.push("/");
+        } catch (error) {
+            console.error(error);
+        }
+    }
 
     // https://www.youtube.com/watch?v=h_vHui2QgnU
     return (
@@ -41,10 +54,14 @@ export default function Login() {
                         />
                 </View>
 
-                <ButtonInput label="Login" onPress={() => { }} style={[styles.button, { backgroundColor: colors.redInput }]} />
-                <Link href="/register">
+                <ButtonInput label="Login" onPress={() => handleSubmit()} style={[styles.button, { backgroundColor: colors.redInput }]} />
+
+                <Row style={{alignSelf: "center"}}>
                     <ThemedText style={{ color: colors.gray }}>Don't have an account yet ? </ThemedText>
-                </Link>
+                    <Link href="/register">
+                        <ThemedText style={{ color: colors.tint, textDecorationLine: "underline" }}>Sign in</ThemedText>
+                    </Link>
+                </Row>
 
                 <ThemedText>My email is : {email}</ThemedText>
                 <ThemedText>My password is : {password}</ThemedText>

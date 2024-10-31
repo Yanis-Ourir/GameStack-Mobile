@@ -11,23 +11,11 @@ import { findTopTenGames, GameProps } from "@/functions/game";
 export default function Index() {
   const colors = useThemeColors();
   const {isPending, isError, data, error} = findTopTenGames();
-  if(isPending) {
-    return (
-      <RootView style={{justifyContent: "center", alignItems: "center"}}>
-        <ThemedText>Loading...</ThemedText>
-      </RootView>
-    );
-  }
 
-  if(isError) {
-    return (
-      <RootView style={{justifyContent: "center", alignItems: "center"}}>
-        <ThemedText>Error: {error.message}</ThemedText>
-      </RootView>
-    );
-  }
+  const games = data as GameProps[];
+ 
 
-  const games: GameProps[] = data;
+ 
   
   return (
     <RootView>
@@ -64,7 +52,9 @@ export default function Index() {
 
       <View>
         <ThemedText variant="headline">Popular Games</ThemedText>
-        {games.map((game) => {
+        {isPending && <ThemedText variant="body">Loading...</ThemedText>}
+        {isError && <ThemedText variant="body">Error : {error.message}</ThemedText>}
+        {games && games.map((game) => {
           return (
             <GameDetails
               key={game.id}

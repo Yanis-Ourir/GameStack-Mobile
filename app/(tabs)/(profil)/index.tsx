@@ -2,21 +2,53 @@ import { ListDetails } from '@/components/list/ListDetails';
 import { RootView } from '@/components/RootView';
 import { ThemedText } from '@/components/ThemedText';
 import { gameLists } from '@/constants/Games';
+import { checkToken } from '@/functions/auth';
+import { findUserById, UserProps } from '@/functions/user';
 import { useThemeColors } from '@/hooks/useThemeColors';
-import React from 'react';
+import { useRouter } from 'expo-router';
+import React, { useEffect, useState } from 'react';
 import { View, Text, Image, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 
 export default function ProfilIndex() {
+    const router = useRouter();
     const colors = useThemeColors();
+    const { isPending, isError, data, error } = findUserById('9d3e0b5e-ab86-4d0b-83e6-97cc1cc79fe5');
+
+    const handleButton = () => {
+        console.log('New list button pressed'); 
+        checkToken();
+    }
+
+    if(isPending) {
+        return (
+            <RootView>
+                <ThemedText>Loading...</ThemedText>
+            </RootView>
+        )
+    }
+
+    if(isError) {
+        return (
+            <RootView>
+                <ThemedText>Error: {error.message}</ThemedText>
+            </RootView>
+        )
+    }
+
+    const user = data as UserProps;
+
+    
+
+   
     return (
         <RootView>
         <ScrollView style={styles.container}>
 
             <View style={styles.profileContainer}>
                 <Image source={require('@/assets/static_images/icon-default.jpg')} style={styles.profileImage} />
-                <ThemedText variant="subtitle">John Doe</ThemedText>
+                <ThemedText variant="subtitle">{user?.pseudo}</ThemedText>
                 <ThemedText variant='body2' style={{color: colors.gray, marginTop: 12}}>
-                    Passionné de jeux vidéo depuis toujours, je suis toujours à la recherche de nouvelles expériences ludiques et immersives.
+                    {user?.description ? user.description : 'Pas de description'}
                 </ThemedText>
             </View>
 
@@ -54,7 +86,7 @@ export default function ProfilIndex() {
                 ))}
             </View>
 
-            <TouchableOpacity style={styles.newListButton}>
+            <TouchableOpacity style={styles.newListButton} onPress={handleButton}>
                 <Text style={styles.newListText}>+ Nouvelle liste</Text>
             </TouchableOpacity>
         </ScrollView>
