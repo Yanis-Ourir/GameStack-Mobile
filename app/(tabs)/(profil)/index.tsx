@@ -2,10 +2,10 @@ import { ListDetails } from '@/components/list/ListDetails';
 import { RootView } from '@/components/RootView';
 import { ThemedText } from '@/components/ThemedText';
 import { gameLists } from '@/constants/Games';
-import { checkToken, TokenProps } from '@/functions/auth';
+import { checkToken } from '@/functions/auth';
+import { findGameListOfUser, ListProps } from '@/functions/list';
 import { findUserById, UserProps } from '@/functions/user';
 import { useThemeColors } from '@/hooks/useThemeColors';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import { View, Text, Image, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
@@ -15,12 +15,11 @@ export default function ProfilIndex() {
     const colors = useThemeColors();
     const [user, setUser] = useState<UserProps>();
     const [isLoading, setIsLoading] = useState(true);
-    const [error, setError] = useState<Error | null>(null);
+    const [userError, setError] = useState<Error | null>(null);
+    const { isPending, isError, data, error } = findGameListOfUser('9d28505b-4fee-4954-bf4d-2dff83798551');
 
 
     useEffect(() => {
-        console.log('New list button pressed');
-
         async function fetchData() {
             const token = await checkToken();
             if (!token) {
@@ -50,6 +49,15 @@ export default function ProfilIndex() {
         );
     }
 
+    if(userError) {
+        return (
+            <RootView>
+                <ThemedText>Error: {userError.message}</ThemedText>
+            </RootView>
+        );
+    }
+
+    console.log(data);
 
     return (
         <RootView>
@@ -85,13 +93,17 @@ export default function ProfilIndex() {
 
 
                 <View style={styles.listContainer}>
-                    {gameLists.map((list) => (
+                    {isPending && <ThemedText>Loading...</ThemedText>}
+                    {isError && <ThemedText>Error: {error.message}</ThemedText>}
+
+                    {data && data.map((list) => (
+                        
                         <ListDetails
                             key={list.id}
                             id={list.id}
-                            title={list.title}
+                            title={list.name}
                             description={list.description}
-                            gameCount={list.gameCount}
+                            gameCount={list.games}
                             image={list.image}
                         />
                     ))}
@@ -109,7 +121,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#11131F',
-        padding: 20,
+        padding: 8,
     },
     profileContainer: {
         alignItems: 'center',

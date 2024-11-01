@@ -50,12 +50,12 @@ export default function TabLayout() {
                 }}
             />
 
-            {/* <Tabs.Screen
+            <Tabs.Screen
                 name="login"
                 options={{
                     href: null
                 }}
-            /> */}
+            /> 
 
             <Tabs.Screen
                 name="list/[id]"
@@ -73,6 +73,13 @@ export default function TabLayout() {
 
             <Tabs.Screen
                 name="review/[slug]"
+                options={{
+                    href: null
+                }}
+            />
+
+            <Tabs.Screen
+                name="logout"
                 options={{
                     href: null
                 }}

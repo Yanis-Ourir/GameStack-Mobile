@@ -6,25 +6,28 @@ import { Link } from "expo-router";
 
 
 type Props = {
-    id: number;
+    id: string;
     title: string;
     description: string;
     gameCount: number;
     image?: string;
 }
 
-
+const imagePath = process.env.EXPO_PUBLIC_IMAGE;
 export function ListDetails({ id, title, description, gameCount, image, ...rest }: Props) {
     const colors = useThemeColors();
     return (
         <Link href={{pathname: "./list/[id]", params: {id: id}}} asChild>
             <TouchableOpacity key={id} style={styles.gameListCard} {...rest}>
                     <Row>
-                        <Image source={{ uri: image }} style={styles.gameImage}/>
-                        <View style={{width: '80%'}}>
+                        <Image source={{ uri: imagePath ? imagePath + image : "" }} style={styles.gameImage}/>
+                        <View style={{width: "65%"}}>
                             <ThemedText variant="body">{title}</ThemedText>
                             <ThemedText variant="body2" style={{color: colors.gray}}>{description}</ThemedText>
-                            <ThemedText variant="body2" style={{color: colors.tint}}>Nombre de jeux : {gameCount}</ThemedText>
+                        </View>
+                        <View>
+                            <ThemedText variant="body2" style={{color: colors.gray}}>Jeux</ThemedText>
+                            <ThemedText variant="subtitle" style={{color: colors.tint, textAlign: "center"}}>{gameCount}</ThemedText>
                         </View>
                     </Row>
             </TouchableOpacity>
@@ -43,7 +46,7 @@ const styles = StyleSheet.create({
     gameImage: {
         width: 100,
         height: 100,
-        borderRadius: 8,
+        borderRadius: 10,
         marginRight: 10,
     },
 })

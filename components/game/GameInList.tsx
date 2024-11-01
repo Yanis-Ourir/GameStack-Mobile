@@ -2,16 +2,17 @@ import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
 import { Row } from "../Row";
 import { ThemedText } from "../ThemedText";
 import { useThemeColors } from "@/hooks/useThemeColors";
+import { StatusProps } from "./GameReview";
 
 type Props = {
     id: number;
-    title: string;
+    name: string;
     description?: string;
     image?: string;
-    status?: string;
+    status?: StatusProps;
 }
 
-export function GameInList({ id, title, description, image, status }: Props) {
+export function GameInList({ id, name, description, image, status }: Props) {
     const colors = useThemeColors();
     return (
         <TouchableOpacity style={{paddingTop: 12}}>
@@ -21,9 +22,9 @@ export function GameInList({ id, title, description, image, status }: Props) {
                     style={styles.image}
                 />
                 <View style={styles.content}>
-                    <ThemedText variant="body">{title}</ThemedText>
+                    <ThemedText variant="body">{name}</ThemedText>
                     <ThemedText variant="body2" style={{ color: colors.gray }}>{description ? description : ""}</ThemedText>
-                    <ThemedText variant="body2" style={{ color: colors.gray }}>{status ? status : ""}</ThemedText>
+                    <ThemedText variant="body2" style={{ color: colors.gray }}>{status ? status.name : ""}</ThemedText>
                 </View>
             </Row>
         </TouchableOpacity>

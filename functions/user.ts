@@ -19,7 +19,6 @@ export async function findUserById(id: string): Promise<UserProps | undefined> {
         }
 
         const data = await response.json();
-        console.log(data);
         return data as UserProps;
     } catch (error) {
         console.error('Error:', error);

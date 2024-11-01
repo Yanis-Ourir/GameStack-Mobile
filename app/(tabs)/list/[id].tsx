@@ -5,6 +5,7 @@ import { RootView } from "@/components/RootView";
 import { Row } from "@/components/Row";
 import { ThemedText } from "@/components/ThemedText";
 import { gameInList, games } from "@/constants/Games";
+import { findListById } from "@/functions/list";
 import { useThemeColors } from "@/hooks/useThemeColors";
 import { useLocalSearchParams } from "expo-router";
 import { Image, View, FlatList } from "react-native";
@@ -12,38 +13,49 @@ import { Image, View, FlatList } from "react-native";
 export default function List() {
     const colors = useThemeColors();
     const params = useLocalSearchParams();
-    const listPlaceholder = {
-        id: 1,
-        title: 'Classiques Incontournables',
-        description: 'Une collection des meilleurs jeux qui ont marqué l’histoire du jeu vidéo.',
-        gameCount: 15,
-        image: 'https://media.rawg.io/media/games/5a4/5a44112251d70a25291cc33757220fce.jpg',
+    const {isPending, isError, data, error} = findListById(params.id);
+
+    if(isPending) {
+        return (
+            <RootView>
+                <ThemedText>Loading...</ThemedText>
+            </RootView>
+        );
     }
+
+    if(isError) {
+        return (
+            <RootView>
+                <ThemedText>Error: {error.message}</ThemedText>
+            </RootView>
+        );
+    }
+    
 
     return (
         <RootView>
             <GoBack currentData="List" />
             <Row gap={8} style={{paddingTop: 24}}>
-                <Image source={{ uri: listPlaceholder.image }} style={{ width: 100, height: 100 }} />
+                <Image source={{ uri: process.env.EXPO_PUBLIC_IMAGE + data.image }} style={{ width: 100, height: 100, borderRadius: 8 }} />
                 <View>
-                    <ThemedText variant="headline">{listPlaceholder.title}</ThemedText>
-                    <ThemedText variant="body" style={{width: 300, color: colors.gray}}>{listPlaceholder.description}</ThemedText>
-                    <ThemedText variant="body" style={{color: colors.gray}}>Last update 24/10/2024</ThemedText>
+                    <ThemedText variant="headline">{data.name}</ThemedText>
+                    <ThemedText variant="body" style={{width: 300, color: colors.gray}}>{data.description}</ThemedText>
+                    <ThemedText variant="body" style={{ color: colors.gray }}>Last update {new Date(data.updated_at).toLocaleDateString()}</ThemedText>
                 </View>
             </Row>
 
             <Row style={{justifyContent: "space-between", paddingTop: 20, paddingBottom: 20}}>
                 <ThemedText variant="subtitle">Games in this list</ThemedText>
-                <ThemedText variant="subtitle" style={{color: colors.tint}}>15</ThemedText>
+                <ThemedText variant="subtitle" style={{color: colors.tint}}>{data.games.length}</ThemedText>
             </Row>
 
             <FlatList
-                data={gameInList}
+                data={data.games}
                 keyExtractor={item => item.id.toString()}
                 renderItem={({ item }) => (
                    <GameInList
                         id={item.id}
-                        title={item.title}
+                        name={item.name}
                         description={item.description}
                         image={item.image}
                         status={item.status}
@@ -53,3 +65,4 @@ export default function List() {
         </RootView>
     );
 }
+

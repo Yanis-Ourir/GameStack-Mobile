@@ -1,8 +1,8 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const endpoint = process.env.EXPO_PUBLIC_API;
-const key = process.env.EXPO_PUBLIC_JWT_KEY;
 const Buffer = require('buffer/').Buffer;
+
 export type TokenProps = {
     id: string,
     pseudo: string,
@@ -24,9 +24,7 @@ export async function login(email: string, password: string) {
         }
 
         const data = await response.json();
-        console.log('Data:', data);
         AsyncStorage.setItem('token', data.access_token);
-        console.log('Login success');
     } catch (error) {
         console.error('Error:', error);
         alert('Login failed. Please check your email and password.');
@@ -37,7 +35,6 @@ export async function login(email: string, password: string) {
 
 export async function checkToken(): Promise<TokenProps> {
     const token = await AsyncStorage.getItem('token');
-    console.log('Token :', token);
     if (!token) {
         throw new Error('No token found');
     }
