@@ -6,7 +6,7 @@ import { checkToken } from '@/functions/auth';
 import { findGameListOfUser, ListProps } from '@/functions/list';
 import { findUserById, UserProps } from '@/functions/user';
 import { useThemeColors } from '@/hooks/useThemeColors';
-import { useRouter } from 'expo-router';
+import { Link, useRouter } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import { View, Text, Image, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 
@@ -109,10 +109,11 @@ export default function ProfilIndex() {
                         />
                     ))}
                 </View>
-
-                <TouchableOpacity style={styles.newListButton}>
-                    <Text style={styles.newListText}>+ Nouvelle liste</Text>
-                </TouchableOpacity>
+                <Link href="/list/new" asChild>
+                    <TouchableOpacity style={styles.newListButton}>
+                        <Text style={styles.newListText}>+ Nouvelle liste</Text>
+                    </TouchableOpacity>
+                </Link>
             </ScrollView>
         </RootView>
     );

@@ -72,7 +72,7 @@ export default function Game() {
                 <View style={styles.commentsSection}>
                     
                     <ThemedText variant="headline">Reviews</ThemedText>
-                    <Link href="/review/NieR:Automata" asChild>
+                    <Link href={`/review/ + ${data.slug}`} asChild>
                         <TouchableOpacity style={styles.addCommentButton}>
                             <ThemedText variant="body" style={styles.addCommentText}>Add a Review</ThemedText>
                         </TouchableOpacity>
