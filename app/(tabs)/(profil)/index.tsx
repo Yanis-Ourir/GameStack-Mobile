@@ -32,7 +32,6 @@ export default function ProfilIndex() {
                 setUser(user);
             } catch (error: any) {
                 setError(error);
-                console.log('Error:', error);
             } finally {
                 setIsLoading(false);
             }
@@ -57,14 +56,17 @@ export default function ProfilIndex() {
         );
     }
 
-    console.log(data);
 
     return (
         <RootView>
             <ScrollView style={styles.container}>
 
                 <View style={styles.profileContainer}>
-                    <Image source={require('@/assets/static_images/icon-default.jpg')} style={styles.profileImage} />
+                    {user?.image ? (
+                        <Image source={{ uri: process.env.EXPO_PUBLIC_IMAGE + user.image.url }} style={styles.profileImage} />
+                    ) : (
+                        <Image source={require('@/assets/static_images/icon-default.jpg')} style={styles.profileImage} />
+                    )}
                     <ThemedText variant="subtitle">{user?.pseudo}</ThemedText>
                     <ThemedText variant='body2' style={{ color: colors.gray, marginTop: 12 }}>
                         {user?.description ? user.description : 'Pas de description'}
@@ -97,7 +99,6 @@ export default function ProfilIndex() {
                     {isError && <ThemedText>Error: {error.message}</ThemedText>}
 
                     {data && data.map((list) => (
-                        
                         <ListDetails
                             key={list.id}
                             id={list.id}

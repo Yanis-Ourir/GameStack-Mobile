@@ -5,31 +5,11 @@ import DynamicIcon from "../DynamicIcon";
 import { Platform } from "./Platform";
 import { useThemeColors } from "@/hooks/useThemeColors";
 import { ThemedText } from "../ThemedText";
+import { EvaluationProps } from "@/functions/evaluation";
 
-type Props = {
-    evaluation: {
-        user: {
-            avatar?: {
-                url: string;
-            };
-            pseudo: string;
-        };
-        rating: number;
-        status: {
-            color: string;
-            icon: string;
-            name: string;
-        };
-        game_time: number;
-        platforms: {
-            name: string;
-            icon: string;
-        }[];
-        description: string;
-    };
-}
 
-export default function EvaluationDetails({ evaluation }: Props) {
+
+export default function EvaluationDetails({ id, rating, description, game_time, status, platforms, user }: EvaluationProps) {
     const colors = useThemeColors();
 
     const tailwindColorsToHex: { [key: string]: string } = {
@@ -38,20 +18,22 @@ export default function EvaluationDetails({ evaluation }: Props) {
         'text-green-500': colors.green,
     }
 
-    const filteredEvaluations = evaluation.platforms.filter((evaluation, index) => index < 2);
+    const filteredEvaluations = platforms.filter((evaluation, index) => index < 2);
+
+  
 
     return (
         <View style={styles.container}>
             <Row>
-                {evaluation.user.avatar ? (
-                    <Image source={{uri: `${process.env.HOST_API}/storage/${evaluation.user.avatar.url}`}} style={styles.avatar}/>
+                {user.image ? (
+                    <Image source={{uri: process.env.EXPO_PUBLIC_IMAGE + user.image.url}} style={styles.avatar}/>
                 ) : (
                     <Image source={require('@/assets/static_images/icon-default.jpg')} style={styles.avatar} />
                 )}
              
                 <View style={styles.infoContainer}>
                     <Row gap={8}>
-                        <ThemedText variant="body">{evaluation.user.pseudo}</ThemedText>
+                        <ThemedText variant="body">{user.pseudo}</ThemedText>
                         <Row gap={4}>
                             {filteredEvaluations.map((platform, index) => (
                                 <Platform key={index} name={platform.name} icon={platform.icon} />
@@ -60,16 +42,16 @@ export default function EvaluationDetails({ evaluation }: Props) {
                     </Row>
                     <Row style={{}}>
                         <Row gap={4}>
-                            <DynamicIcon icon={evaluation.status.icon} color={evaluation.status.color}/>
-                            <ThemedText variant="body2" style={{ color: tailwindColorsToHex[evaluation.status.color]}}>{evaluation.status.name}</ThemedText>
+                            <DynamicIcon icon={status.icon} color={status.color}/>
+                            <ThemedText variant="body2" style={{ color: tailwindColorsToHex[status.color]}}>{status.name}</ThemedText>
                         </Row>
-                        <ThemedText variant="body2" style={{color: colors.gray}}> - {evaluation.game_time} heures</ThemedText>
+                        <ThemedText variant="body2" style={{color: colors.gray}}> - {game_time} heures</ThemedText>
                     </Row>
                 
                 </View>
-                <ThemedText variant="headline" style={{ color: colors.tint }}>{evaluation.rating}</ThemedText>
+                <ThemedText variant="headline" style={{ color: colors.tint }}>{rating}</ThemedText>
             </Row>
-                    <ThemedText variant="body2" style={{marginTop: 12}}>{evaluation.description}</ThemedText>
+                    <ThemedText variant="body2" style={{marginTop: 12}}>{description}</ThemedText>
         </View>
     );
 }

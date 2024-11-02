@@ -1,5 +1,6 @@
 import { GameReviewProps } from "@/components/game/GameReview";
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
+import { UserProps } from "./user";
 
 export type ListProps = {
     id: string;
@@ -20,21 +21,13 @@ export type ListDetailsProps = {
     user_id: number;
     image: string;
     updated_at: string;
-    user: User;
+    user: UserProps;
     likes: number;
     dislikes: number;
     games: GameReviewProps[];
     is_game_in_list?: boolean;
 }
 
-
-type User = {
-    id: number;
-    pseudo: string;
-    email: string;
-    description: string;
-    image: string;
-}
 
 const endpoint = process.env.EXPO_PUBLIC_API;
 
@@ -52,7 +45,6 @@ export function findGameListOfUser(id: string): UseQueryResult<ListProps[], Erro
 }
 
 export function findListById(id: string[] | string): UseQueryResult<ListDetailsProps, Error> {
-    console.log(id);
     return useQuery<ListDetailsProps, Error>({
         queryKey: ['gameList', id],
         queryFn: async () => {

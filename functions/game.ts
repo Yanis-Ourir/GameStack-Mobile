@@ -1,4 +1,5 @@
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
+import { EvaluationProps } from "./evaluation";
 
 export type GameProps = {
     id: number;
@@ -10,6 +11,7 @@ export type GameProps = {
     platforms: Platform[];
     tags: string[];
     rating: number;
+    evaluations?: EvaluationProps[];
 }
 
 type Platform = {

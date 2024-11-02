@@ -77,8 +77,17 @@ export default function Game() {
                             <ThemedText variant="body" style={styles.addCommentText}>Add a Review</ThemedText>
                         </TouchableOpacity>
                     </Link>
-                    {comments.map(comment => (
-                      <EvaluationDetails key={comment.id} evaluation={comment} />
+                    {data.evaluations && data.evaluations.map(evaluation => (
+                      <EvaluationDetails 
+                        key={evaluation.id} 
+                        id={evaluation.id} 
+                        rating={evaluation.rating} 
+                        description={evaluation.description} 
+                        game_time={evaluation.game_time} 
+                        status={evaluation.status} 
+                        platforms={evaluation.platforms} 
+                        user={evaluation.user} 
+                      />
                     ))}
                 </View>
 

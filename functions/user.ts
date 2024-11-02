@@ -1,8 +1,18 @@
 export type UserProps = {
     pseudo: string;
     email: string;
+    image?: ImageProps;
     description: string;
 }
+
+type ImageProps = {
+    id: number;
+    url: string;
+    created_at: string;
+    updated_at: string;
+}
+
+
 const endpoint = process.env.EXPO_PUBLIC_API;
 
 export async function findUserById(id: string): Promise<UserProps | undefined> {
