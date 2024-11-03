@@ -7,9 +7,9 @@ import { Link } from "expo-router";
 
 type Props = {
     id: number;
-    title: string;
-    platforms: Platform[];
-    tags: string[];
+    name: string;
+    platforms?: Platform[];
+    tags?: string[];
     releaseDate: string;
     rating: number;
     image?: string;
@@ -22,9 +22,11 @@ type Platform = {
 }
 
 
-export function GameDetails({id, title, platforms, tags, releaseDate, rating, image, slug}: Props) {
+export function GameDetails({id, name, platforms, tags, releaseDate, rating, image, slug}: Props) {
     const colors = useThemeColors();
-    const platformsFiltered = platforms.filter((platform, index) => index < 2);
+    
+    const platformsFiltered = (platforms ?? []).filter((platform, index) => index < 2);
+
     return (
         <Link href={`/game/${slug}`} asChild>
         <TouchableOpacity>
@@ -34,14 +36,16 @@ export function GameDetails({id, title, platforms, tags, releaseDate, rating, im
                         style={styles.image}
                     />
                     <View style={styles.content}>
-                        <ThemedText variant="body">{title}</ThemedText>
+                        <ThemedText variant="body">{name}</ThemedText>
                         <Row gap={8} style={{paddingVertical: 12}}>
-                        {platformsFiltered.map((platform) => (
+                        {platformsFiltered && platformsFiltered.map((platform) => (
                             <Platform key={platform.name} name={platform.name} icon={platform.icon} />
                         ))}
                         </Row>
-                        <ThemedText variant="body2" style={{color: colors.gray}}>{tags.join(', ')}</ThemedText>
-                        <ThemedText variant="body2" style={{ color: colors.gray }}>{releaseDate}</ThemedText>
+                        <Row gap={8}>
+                            <ThemedText variant="body2" style={{color: colors.gray}}>{tags?.join(', ')}</ThemedText>
+                            <ThemedText variant="body2" style={{ color: colors.tint }}>{releaseDate}</ThemedText>
+                        </Row>
                     </View>
                         <ThemedText variant="subtitle" style={{color: colors.tint}}>{rating}</ThemedText>
             </Row>

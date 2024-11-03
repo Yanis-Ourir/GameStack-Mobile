@@ -31,17 +31,21 @@ export type ListDetailsProps = {
 
 const endpoint = process.env.EXPO_PUBLIC_API;
 
-export function findGameListOfUser(id: string): UseQueryResult<ListProps[], Error> {
-    return useQuery<ListProps[], Error>({
-        queryKey: ['gameLists', id],
-        queryFn: async () => {
-            const response = await fetch(`${endpoint}/game-lists/user/${id}`);
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
+export async function findGameListOfUser(id: string): Promise<ListProps[] | string> {
+    try {
+        const response = await fetch(`${endpoint}/game-lists/user/${id}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
             }
-            return response.json();
+        });
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
         }
-    })
+        return response.json();
+    } catch (error) {
+        return error + 'An error occurred while fetching the list';
+    }
 }
 
 export function findListById(id: string[] | string): UseQueryResult<ListDetailsProps, Error> {

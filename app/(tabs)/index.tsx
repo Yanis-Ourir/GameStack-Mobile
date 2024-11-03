@@ -59,10 +59,10 @@ export default function Index() {
             <GameDetails
               key={game.id}
               id={game.id}
-              title={game.name}
+              name={game.name}
               platforms={game.platforms}
               tags={game.tags}
-              releaseDate={game.releaseDate}
+              releaseDate={game.release_date}
               rating={game.rating}
               image={game.image}
               slug={game.slug}

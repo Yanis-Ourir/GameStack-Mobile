@@ -7,7 +7,7 @@ export type GameProps = {
     description: string;
     image?: string;
     slug: string;
-    releaseDate: string;
+    release_date: string;
     platforms: Platform[];
     tags: string[];
     rating: number;
@@ -34,18 +34,6 @@ export function findGameBySlug(slug: string | string[]): UseQueryResult<GameProp
     });
 }
 
-export async function findGameById(id: number): Promise<GameProps> {
-    const response = await fetch(endpoint + '/game/' + id);
-    const data = await response.json();
-    return data.results;
-}
-
-export async function findGames(): Promise<GameProps[]> {
-    const response = await fetch(endpoint + '/games');
-    const data = await response.json();
-    return data.results;
-}
-
 export function findTopTenGames(): UseQueryResult<GameProps[], Error> {
     return useQuery<GameProps[], Error>({
         queryKey: ['topTenGames'],
@@ -59,10 +47,17 @@ export function findTopTenGames(): UseQueryResult<GameProps[], Error> {
     });
 }
 
-export async function findGameBySearch(search: string): Promise<GameProps[]> {
-    const response = await fetch(endpoint + '/games/search/' + search);
-    const data = await response.json();
-    return data.results;
+export function findBySearch(search: string): UseQueryResult<GameProps[], Error> {
+    return useQuery<GameProps[], Error>({
+        queryKey: ['game', search],
+        queryFn: async () => {
+            const response = await fetch(`${endpoint}/games/search/${search}`);
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        }
+    });
 }
 
 export async function findGamesRecommendation(): Promise<GameProps[]> {

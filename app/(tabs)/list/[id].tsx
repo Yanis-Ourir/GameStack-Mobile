@@ -1,5 +1,6 @@
 import { GameInList } from "@/components/game/GameInList";
 import { GoBack } from "@/components/GoBack";
+import Loader from "@/components/Loader";
 import { RootView } from "@/components/RootView";
 import { Row } from "@/components/Row";
 import { ThemedText } from "@/components/ThemedText";
@@ -15,9 +16,7 @@ export default function List() {
 
     if(isPending) {
         return (
-            <RootView>
-                <ThemedText>Loading...</ThemedText>
-            </RootView>
+            <Loader />
         );
     }
 

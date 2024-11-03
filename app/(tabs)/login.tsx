@@ -63,8 +63,7 @@ export default function Login() {
                     </Link>
                 </Row>
 
-                <ThemedText>My email is : {email}</ThemedText>
-                <ThemedText>My password is : {password}</ThemedText>
+
             </View>
 
            
@@ -78,6 +77,7 @@ const styles = StyleSheet.create({
         width: 150,
         height: 150,
         alignSelf: "center",
+        marginTop: 50,
     },
     form: {
         padding: 10,

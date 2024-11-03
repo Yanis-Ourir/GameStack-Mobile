@@ -33,13 +33,21 @@ export async function login(email: string, password: string) {
 
 
 
-export async function checkToken(): Promise<TokenProps> {
-    const token = await AsyncStorage.getItem('token');
-    if (!token) {
-        throw new Error('No token found');
+export async function checkToken(): Promise<TokenProps | null> {
+    try {
+        const token = await AsyncStorage.getItem('token');
+        if (!token) {
+            console.error('No token found');
+            return null;
+        }
+
+        const payloadToken = parseJWT(token);
+        return payloadToken as TokenProps;
+    } catch (error) {
+        console.error('Error:', error);
+        return null;
     }
-    const payloadToken = parseJWT(token);
-    return payloadToken as TokenProps;
+    
 }
 
 export default function parseJWT(token: string): any {

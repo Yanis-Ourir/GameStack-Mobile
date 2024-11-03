@@ -1,4 +1,5 @@
 import { ListDetails } from '@/components/list/ListDetails';
+import Loader from '@/components/Loader';
 import { RootView } from '@/components/RootView';
 import { ThemedText } from '@/components/ThemedText';
 import { gameLists } from '@/constants/Games';
@@ -6,7 +7,7 @@ import { checkToken } from '@/functions/auth';
 import { findGameListOfUser, ListProps } from '@/functions/list';
 import { findUserById, UserProps } from '@/functions/user';
 import { useThemeColors } from '@/hooks/useThemeColors';
-import { Link, useRouter } from 'expo-router';
+import { Link, Redirect, useRouter } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import { View, Text, Image, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 
@@ -16,7 +17,8 @@ export default function ProfilIndex() {
     const [user, setUser] = useState<UserProps>();
     const [isLoading, setIsLoading] = useState(true);
     const [userError, setError] = useState<Error | null>(null);
-    const { isPending, isError, data, error } = findGameListOfUser('9d28505b-4fee-4954-bf4d-2dff83798551');
+    const [data, setData] = useState<ListProps[] | null>(null);
+  
 
 
     useEffect(() => {
@@ -26,10 +28,12 @@ export default function ProfilIndex() {
                 router.push('/login');
                 return;
             }
-
             try {
                 const user = await findUserById(token.id);
                 setUser(user);
+                const lists = await findGameListOfUser(token.id);
+                setIsLoading(false);
+                setData(lists as ListProps[]);
             } catch (error: any) {
                 setError(error);
             } finally {
@@ -37,14 +41,12 @@ export default function ProfilIndex() {
             }
         }
         fetchData();
-       
+
     }, []);
 
     if(isLoading) {
         return (
-            <RootView>
-                <ThemedText>Loading...</ThemedText>
-            </RootView>
+            <Loader />
         );
     }
 
@@ -95,8 +97,8 @@ export default function ProfilIndex() {
 
 
                 <View style={styles.listContainer}>
-                    {isPending && <ThemedText>Loading...</ThemedText>}
-                    {isError && <ThemedText>Error: {error.message}</ThemedText>}
+                    {isLoading && <ThemedText>Loading...</ThemedText>}
+                    {userError && <ThemedText>Error: {userError}</ThemedText>}
 
                     {data && data.map((list) => (
                         <ListDetails

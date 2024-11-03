@@ -50,6 +50,7 @@ export default function ListNew() {
     const handleSubmit = async () => {
         console.log('submit');
         if(listName === '' || listDescription === '' || userId === null) {
+            setMessage('List name and description are required to create a list');
             return;
         }
 
@@ -129,10 +130,10 @@ const styles = StyleSheet.create({
     },
     descriptionInput: {
         height: 80,
-        textAlignVertical: 'top', // Align text to the top for multi-line input
+        textAlignVertical: 'top',
     },
     inputError: {
-        borderColor: '#C31432', // Rouge pour indiquer une erreur
+        borderColor: '#C31432', 
     },
     switchRow: {
         justifyContent: 'space-between',
