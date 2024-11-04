@@ -14,6 +14,7 @@ export type GameReviewProps = {
 }
 
 export type PlatformsProps = {
+    id: number;
     name: string;
     icon: string;
 }

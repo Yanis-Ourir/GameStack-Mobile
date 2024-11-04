@@ -15,6 +15,7 @@ export type GameProps = {
 }
 
 type Platform = {
+    id: number;
     name: string;
     icon: string;
 }

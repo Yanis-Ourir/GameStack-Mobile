@@ -1,37 +1,101 @@
 import { CustomCheckBox } from "@/components/CustomCheckBox";
+import ErrorMessage from "@/components/ErrorMessage";
 import { Platform } from "@/components/game/Platform";
+import Loader from "@/components/Loader";
 import { RootView } from "@/components/RootView";
 import { Row } from "@/components/Row";
+import SuccessMessage from "@/components/SuccessMessage";
 import { ThemedText } from "@/components/ThemedText";
 import { statuses } from "@/constants/Games";
+import { createEvaluation } from "@/functions/evaluation";
+import { findGameBySlug } from "@/functions/game";
+import { useAuthToken } from "@/hooks/useAuthToken";
 import { useThemeColors } from "@/hooks/useThemeColors";
+import { useLocalSearchParams } from "expo-router";
+import { useState } from "react";
 import { Image, ScrollView, StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
 
 export default function Review() {
     const colors = useThemeColors();
-    const game = {
-        id: 1,
-        title: 'Super Mario Bros.',
-        description: 'Super Mario Bros. is a platform game developed and published by Nintendo. Players control Mario, or his brother Luigi in multiplayer mode, as they travel the Mushroom Kingdom to rescue Princess Toadstool from Bowser.',
-        image: 'https://media.rawg.io/media/games/5a4/5a44112251d70a25291cc33757220fce.jpg',
-        rating: 4.5,
-        releaseDate: '13/09/1985',
-        genres: ['Platformer', 'Adventure', 'RPG', 'Action', 'Arcade'],
-        platforms: [
-            {
-                name: 'NES',
-                icon: 'IoGameControllerOutline',
-            },
-            {
-                name: 'Test',
-                icon: 'IoGameControllerOutline',
-            },
-            {
-                name: 'GameCube',
-                icon: 'IoGameControllerOutline',
-            },
-        ],
-    };
+    const params = useLocalSearchParams();
+    const { isPending, isError, data, error } = findGameBySlug(params.slug);
+    const [rating, setRating] = useState<number>();
+    const [platforms, setPlatforms] = useState<string[]>([]);
+    const [hoursPlayed, setHoursPlayed] = useState<number>();
+    const [statusId, setStatusId] = useState<number | undefined>(undefined);
+    const [review, setReview] = useState("");
+    const token = useAuthToken();
+    const [errorWhileCreating, setErrorWhileCreating] = useState<any>();
+    const [successMessage, setSuccessMessage] = useState<string>();
+
+    if (isPending) {
+        return (
+            <Loader />
+        );
+    }
+
+    if (isError) {
+        return (
+            <RootView>
+                <ThemedText>Error: {error.message}</ThemedText>
+            </RootView>
+        );
+    }
+    
+    const handlePlatform = (platform: string) => {
+        if (platforms.includes(platform)) {
+            setPlatforms(platforms.filter(p => p !== platform));
+        } else {
+            setPlatforms([...platforms, platform]);
+        }
+    }
+
+    const handleStatus = (newStatusId: number) => {
+        if (statusId === newStatusId) {
+            setStatusId(undefined);
+        } else {
+            setStatusId(newStatusId);
+
+        }
+    }
+
+    const handleSubmit = async () => {
+        if(!rating || !platforms.length || !hoursPlayed || !statusId || !review || !token) {
+            setErrorWhileCreating("Please fill in all the fields");
+            return;
+        }
+
+        try {
+            const evaluation = createEvaluation({
+                rating: rating,
+                platforms: platforms,
+                gameTime: hoursPlayed.toString(),
+                statusId: statusId,
+                description: review,
+                gameId: data.id,
+                userId: token.id,
+            });
+
+            setSuccessMessage(await evaluation);
+
+            resetAllStates();
+
+        } catch (error) {
+            console.error(error);
+            setErrorWhileCreating(error);
+        }
+    
+    }
+
+    const resetAllStates = () => {
+        setRating(undefined);
+        setPlatforms([]);
+        setHoursPlayed(undefined);
+        setStatusId(undefined);
+        setReview("");
+    }
+
+    const game = data;
     return (
         <RootView>
             <ScrollView contentContainerStyle={styles.container}>
@@ -41,7 +105,7 @@ export default function Review() {
 
                 <View style={styles.detailsContainer}>
                     <ThemedText variant="headline" style={{marginBottom: 8}}>
-                        {game.title}
+                        {game.name}
                     </ThemedText>
                     <Row gap={8}>
                         {game.platforms.map(platform => (
@@ -59,6 +123,15 @@ export default function Review() {
                     </Row>
                 </View>
 
+                <View style={{height: 60}}>
+                    {errorWhileCreating && (
+                        <ErrorMessage message={errorWhileCreating} />
+                    )}
+                    {successMessage && (
+                        <SuccessMessage message={successMessage} />
+                    )}
+                </View>
+
                 <View style={styles.formReview}>
                     <ThemedText variant="subtitle">Create your review</ThemedText>
                     <TextInput
@@ -67,10 +140,18 @@ export default function Review() {
                         placeholderTextColor={colors.gray}
                         style={styles.numberInput}
                         maxLength={10}
+                        onChangeText={text => setRating(parseInt(text))}
                     />
+
                     <Row gap={8} style={{paddingVertical: 24}}>
                         {game.platforms.map(platform => (
-                            <CustomCheckBox key={platform.name} label={platform.name} icon={platform.icon} value={false} />
+                            <CustomCheckBox 
+                                key={platform.name} 
+                                label={platform.name} 
+                                icon={platform.icon} 
+                                value={false} 
+                                onPress={() => handlePlatform(platform.name)}
+                            />
                         ))}
                     </Row>
 
@@ -79,6 +160,7 @@ export default function Review() {
                         keyboardType="numeric"
                         placeholderTextColor={colors.gray}
                         style={styles.numberInput}
+                        onChangeText={text => setHoursPlayed(parseInt(text))}
                     />
 
                     <View style={styles.statusGrid}>
@@ -87,8 +169,9 @@ export default function Review() {
                                     key={status.name} 
                                     label={status.name} 
                                     icon={status.icon} 
-                                    value={false} 
+                                    value={statusId === status.id} 
                                     color={status.color}
+                                    onPress={() => handleStatus(status.id)}
                                 />
                             ))}
                     </View>
@@ -98,8 +181,11 @@ export default function Review() {
                         placeholderTextColor={colors.gray}
                         multiline
                         style={styles.textArea}
+                        value={review}
+                        onChangeText={setReview}
                     />
-                    <TouchableOpacity style={styles.addReviewButton}>
+
+                    <TouchableOpacity style={styles.addReviewButton} onPress={handleSubmit}>
                         <ThemedText variant="body" style={styles.addReviewText}>Add a Review</ThemedText>
                     </TouchableOpacity>
                 </View>
@@ -121,7 +207,7 @@ const styles = StyleSheet.create({
         marginBottom: 8,
     },
     detailsContainer: {
-        marginBottom: 20,
+        marginBottom: 8,
     },
     formReview: {
         backgroundColor: 'rgb(17 24 39)',

@@ -72,7 +72,7 @@ export default function TabLayout() {
             /> 
 
             <Tabs.Screen
-                name="review/[slug]"
+                name="evaluation/[slug]"
                 options={{
                     href: null
                 }}

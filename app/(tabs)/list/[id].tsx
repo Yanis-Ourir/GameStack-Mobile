@@ -64,7 +64,7 @@ export default function List() {
                         image={item.image}
                         status={item.status}
                     />
-            )}
+                )}
             />
         </RootView>
     );

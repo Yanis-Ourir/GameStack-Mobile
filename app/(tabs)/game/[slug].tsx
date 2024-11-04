@@ -10,6 +10,7 @@ import { Row } from '@/components/Row';
 import EvaluationDetails from '@/components/game/Evaluation';
 import { comments } from '@/constants/Games';
 import { findGameBySlug, GameProps } from '@/functions/game';
+import Loader from '@/components/Loader';
 
 export default function Game() {
     const colors = useThemeColors();
@@ -18,9 +19,7 @@ export default function Game() {
 
     if (isPending) {
         return (
-            <RootView style={{justifyContent: 'center', alignItems: 'center'}}>
-                <ThemedText>Loading...</ThemedText>
-            </RootView>
+            <Loader />
         );
     }
 
@@ -58,7 +57,7 @@ export default function Game() {
                     
                     <Row style={{justifyContent: "space-between"}}>
                         <ThemedText variant="body2" style={{width: "40%"}}>{game.tags.join(', ')}</ThemedText>
-                        <ThemedText variant="body2" style={{ color: colors.gray }}>Release Date: {game.releaseDate}</ThemedText>
+                        <ThemedText variant="body2" style={{ color: colors.gray }}>Release Date: {game.release_date}</ThemedText>
                     </Row>
 
                     
@@ -72,7 +71,8 @@ export default function Game() {
                 <View style={styles.commentsSection}>
                     
                     <ThemedText variant="headline">Reviews</ThemedText>
-                    <Link href={`/review/ + ${data.slug}`} asChild>
+                    {/* @ts-ignore */}
+                    <Link href={`/evaluation/${data.slug}`} asChild>
                         <TouchableOpacity style={styles.addCommentButton}>
                             <ThemedText variant="body" style={styles.addCommentText}>Add a Review</ThemedText>
                         </TouchableOpacity>

@@ -5,6 +5,7 @@ import { useThemeColors } from "@/hooks/useThemeColors";
 import DynamicIcon from "../DynamicIcon";
 import { Row } from "../Row";
 import { LinearGradient } from "expo-linear-gradient";
+import { platformMapping } from "@/functions/platform";
 
 type Props = {
     name: string;
@@ -12,17 +13,7 @@ type Props = {
 }
 
 export function Platform({ name, icon }: Props) {
-    const platformMapping: { [key: string]: string } = {
-        "PlayStation 2": "PS2",
-        "PlayStation 3": "PS3",
-        "PlayStation 4": "PS4",
-        "PlayStation 5": "PS5",
-        "Xbox Series S/X": "XSS/XSX",
-        "Xbox One": "XOne",
-        "Nintendo Switch": "Switch",
-    };
-
-    const displayName = platformMapping[name] || name;
+    const displayName = platformMapping(name);
     const colors = useThemeColors();
 
     return (
