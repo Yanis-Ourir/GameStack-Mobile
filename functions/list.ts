@@ -109,4 +109,43 @@ export async function createList(name: string, description: string, isPrivate: b
     }
 }
 
+export async function findListAndCheckIfGameIsIn(userId: string,gameId: number): Promise<ListDetailsProps[]> {
+    try {
+        const response = await fetch(`${endpoint}/game-list/${userId}/game/${gameId}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Error:', error);
+        throw new Error('Error while fetching your gamelists');
+    }
+}
+
+export async function addGameToList(listId: string, gameId: number) {
+    console.log('addGameToList', listId, gameId);
+    try {
+        const response = await fetch(`${endpoint}/game-lists/add-game`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                gameListId: listId,
+                gameId: gameId,
+            }),
+        });
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Error:', error);
+        throw new Error('Erreur dans l\'ajout du jeu à la liste.');
+    }
+}
+
+
+
 
