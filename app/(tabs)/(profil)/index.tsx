@@ -1,15 +1,16 @@
-import { ListDetails } from '@/components/list/ListDetails';
-import Loader from '@/components/Loader';
-import { RootView } from '@/components/RootView';
-import { ThemedText } from '@/components/ThemedText';
-import { gameLists } from '@/constants/Games';
+import { View, Text, Image, StyleSheet, ScrollView, TouchableOpacity, Modal } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import { Href, Link, useRouter } from 'expo-router';
+import React, { useEffect, useState } from 'react';
+import { useThemeColors } from '@/hooks/useThemeColors';
 import { checkToken } from '@/functions/auth';
 import { findGameListOfUser, ListProps } from '@/functions/list';
 import { findUserById, UserProps } from '@/functions/user';
-import { useThemeColors } from '@/hooks/useThemeColors';
-import { Link, Redirect, useRouter } from 'expo-router';
-import React, { useEffect, useState } from 'react';
-import { View, Text, Image, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { RootView } from '@/components/RootView';
+import { ThemedText } from '@/components/ThemedText';
+import Loader from '@/components/Loader';
+import { ListDetails } from '@/components/list/ListDetails';
+import { Row } from '@/components/Row';
 
 export default function ProfilIndex() {
     const router = useRouter();
@@ -18,8 +19,7 @@ export default function ProfilIndex() {
     const [isLoading, setIsLoading] = useState(true);
     const [userError, setError] = useState<Error | null>(null);
     const [data, setData] = useState<ListProps[] | null>(null);
-  
-
+    const [modalVisible, setModalVisible] = useState(false);
 
     useEffect(() => {
         async function fetchData() {
@@ -32,7 +32,6 @@ export default function ProfilIndex() {
                 const user = await findUserById(token.id);
                 setUser(user);
                 const lists = await findGameListOfUser(token.id);
-                setIsLoading(false);
                 setData(lists as ListProps[]);
             } catch (error: any) {
                 setError(error);
@@ -41,34 +40,66 @@ export default function ProfilIndex() {
             }
         }
         fetchData();
-
     }, []);
 
-    if(isLoading) {
-        return (
-            <Loader />
-        );
-    }
+    if (isLoading) return <Loader />;
+    if (userError) return <RootView><ThemedText>Error: {userError.message}</ThemedText></RootView>;
 
-    if(userError) {
-        return (
-            <RootView>
-                <ThemedText>Error: {userError.message}</ThemedText>
-            </RootView>
-        );
-    }
-
+    const profilEdit = '/profil/edit' as Href;
 
     return (
         <RootView>
             <ScrollView style={styles.container}>
-
                 <View style={styles.profileContainer}>
-                    {user?.image ? (
-                        <Image source={{ uri: process.env.EXPO_PUBLIC_IMAGE + user.image.url }} style={styles.profileImage} />
-                    ) : (
-                        <Image source={require('@/assets/static_images/icon-default.jpg')} style={styles.profileImage} />
-                    )}
+              
+                        <View style={styles.settings}>
+                            <View>
+
+                            </View>
+                            {user?.image ? (
+                                <Image source={{ uri: process.env.EXPO_PUBLIC_IMAGE + user.image.url }} style={styles.profileImage} />
+                            ) : (
+                                <Image source={require('@/assets/static_images/icon-default.jpg')} style={styles.profileImage} />
+                            )}
+
+                            <TouchableOpacity onPress={() => setModalVisible(!modalVisible)}>
+                                <Ionicons name="settings-outline" size={24} color={colors.gray} />
+                            </TouchableOpacity>
+                        </View>
+
+                        <Modal
+                            animationType="fade"
+                            transparent={true}
+                            visible={modalVisible}
+                            onRequestClose={() => setModalVisible(false)}
+                        >
+                            <TouchableOpacity
+                                style={styles.modalOverlay}
+                                onPress={() => setModalVisible(false)}
+                            >
+                                <View style={[styles.popover, { backgroundColor: colors.backgroundColor }]}>
+                                <Link href={"/edit"} asChild>
+                                    <TouchableOpacity>
+                                        <Row gap={8}>
+                                            <Ionicons name="create-outline" size={24} color={colors.grayLight} />
+                                            <ThemedText style={[styles.popoverText]}>Edit profil</ThemedText>
+                                        </Row>
+                                    </TouchableOpacity>
+                                </Link>
+
+                                <Link href="/logout" asChild>
+                                    <TouchableOpacity>
+                                        <Row gap={8}>
+                                            <Ionicons name="log-out-outline" size={24} color={colors.tint} />
+                                            <ThemedText style={[styles.popoverText, { color: colors.tint }]}>Disconnect</ThemedText>
+                                        </Row>
+                                    </TouchableOpacity>
+                                </Link>
+                                </View>
+                            </TouchableOpacity>
+                        </Modal>
+                    
+
                     <ThemedText variant="subtitle">{user?.pseudo}</ThemedText>
                     <ThemedText variant='body2' style={{ color: colors.gray, marginTop: 12 }}>
                         {user?.description ? user.description : 'Pas de description'}
@@ -135,7 +166,38 @@ const styles = StyleSheet.create({
         width: 80,
         height: 80,
         borderRadius: 40,
-        marginBottom: 10,
+        alignSelf: 'center',
+        marginLeft: 20,
+    },
+    settings: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        width: '100%',
+        alignItems: 'center',
+        marginBottom: 20,
+    },
+    modalOverlay: {
+        flex: 1,
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    },
+    popover: {
+        position: 'absolute',
+        top: 70,
+        right: 20,
+        paddingVertical: 8,
+        paddingHorizontal: 16,
+        borderRadius: 8,
+        shadowColor: '#000',
+        shadowOpacity: 0.3,
+        shadowRadius: 4,
+        shadowOffset: { width: 0, height: 2 },
+        elevation: 5,
+    },
+    popoverText: {
+        fontSize: 16,
+        paddingVertical: 6,
     },
     profileName: {
         color: '#F5F5F5',
