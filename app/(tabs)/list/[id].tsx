@@ -1,18 +1,25 @@
 import { GameInList } from "@/components/game/GameInList";
+import { GameReviewProps } from "@/components/game/GameReview";
 import { GoBack } from "@/components/GoBack";
 import Loader from "@/components/Loader";
 import { RootView } from "@/components/RootView";
 import { Row } from "@/components/Row";
 import { ThemedText } from "@/components/ThemedText";
-import { findListById } from "@/functions/list";
+import { findListById, removeGameFromList } from "@/functions/list";
 import { useThemeColors } from "@/hooks/useThemeColors";
+import { Ionicons } from "@expo/vector-icons";
 import { useLocalSearchParams } from "expo-router";
-import { Image, View, FlatList, StyleSheet } from "react-native";
+import { useState } from "react";
+import { Image, View, FlatList, StyleSheet, TouchableOpacity } from "react-native";
+
 
 export default function List() {
     const colors = useThemeColors();
     const params = useLocalSearchParams();
     const {isPending, isError, data, error} = findListById(params.id);
+    const [successMessage, setSuccessMessage] = useState<string | null>(null);
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
+    const [games, setGames] = useState<GameReviewProps[]>();
 
     if(isPending) {
         return (
@@ -27,6 +34,24 @@ export default function List() {
             </RootView>
         );
     }
+
+    async function handleDelete(gameId: number, listId: string) {
+        if(!data) return;
+        try {
+            await removeGameFromList(gameId, listId);
+            setGames(data.games.filter(game => game.id !== gameId));
+            setSuccessMessage('Jeux supprimé avec succès');
+            setErrorMessage('');
+
+        } catch (error) {
+            setErrorMessage('Erreur lors de la suppression du jeu');
+            setSuccessMessage('');
+        }
+    }
+
+    console.log(data.games[0].review);
+
+    
 
     return (
         <RootView>
@@ -54,16 +79,21 @@ export default function List() {
             </Row>
 
             <FlatList
-                data={data.games}
+                data={games ? games : data.games}
                 keyExtractor={item => item.id.toString()}
                 renderItem={({ item }) => (
-                   <GameInList
-                        id={item.id}
-                        name={item.name}
-                        description={item.description}
-                        image={item.image}
-                        status={item.status}
+                   
+                    <GameInList
+                            id={item.id}
+                            listId = {data.id}
+                            name={item.name}
+                            description={item.review[0]?.description}
+                            image={item.image}
+                            status={item.review[0]?.status}
+                            userId={data.user.id}
+                            onPressDelete={() => handleDelete(item.id, data.id)}
                     />
+                 
                 )}
             />
         </RootView>

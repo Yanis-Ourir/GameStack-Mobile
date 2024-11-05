@@ -146,6 +146,31 @@ export async function addGameToList(listId: string, gameId: number) {
     }
 }
 
+export async function removeGameFromList(gameId: number, listId: string): Promise<{ success: boolean; message: string }> {
+    console.log(listId, gameId);
+    try {
+        const response = await fetch(`${endpoint}/game-lists/remove-game`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                game_list_id: listId,
+                game_id: gameId,
+            }),
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error('Error while removing game from list');
+        }
+
+        const data = await response.json();
+        return { success: true, message: 'Game successfully removed from list' };
+    } catch (error) {
+        return { success: false, message: 'Error while removing game from your list' };
+    }
+}
 
 
 

@@ -98,7 +98,7 @@ export default function Game() {
                         <ThemedText variant="body2" style={{ color: colors.gray }}>Release Date: {game.release_date}</ThemedText>
                     </Row>
 
-                    {/* Community Rating and "Add to List" Button */}
+                
                     <Row style={{ justifyContent: "space-between", marginVertical: 12 }}>
                         <ThemedText variant="subtitle">Community Rating </ThemedText>
                         <ThemedText variant="headline" style={[{ color: colors.tint }]}>{game.rating}</ThemedText>

@@ -9,6 +9,7 @@ export type GameReviewProps = {
     slug: string;
     status?: StatusProps;
     release_date: string;
+    review: [ReviewProps];
     handleEdit: () => void;
     handleDelete: (idGame: string, idList: string) => void;
 }
@@ -25,3 +26,9 @@ export type StatusProps = {
     icon: string;
     color: string;
 }
+
+export type ReviewProps = {
+    id: number;
+    description: string;
+    status: StatusProps;
+};
