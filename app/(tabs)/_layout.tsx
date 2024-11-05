@@ -79,13 +79,6 @@ export default function TabLayout() {
             />
 
             <Tabs.Screen
-                name="logout"
-                options={{
-                    href: null
-                }}
-            />
-
-            <Tabs.Screen
                 name="list/new"
                 options={{
                     href: null

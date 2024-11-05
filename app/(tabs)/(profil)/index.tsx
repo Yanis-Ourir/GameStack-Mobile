@@ -3,7 +3,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { Href, Link, useRouter } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import { useThemeColors } from '@/hooks/useThemeColors';
-import { checkToken } from '@/functions/auth';
+import { checkToken, logout } from '@/functions/auth';
 import { findGameListOfUser, ListProps } from '@/functions/list';
 import { findUserById, UserProps } from '@/functions/user';
 import { RootView } from '@/components/RootView';
@@ -41,6 +41,15 @@ export default function ProfilIndex() {
         }
         fetchData();
     }, []);
+
+    async function handleLogout() {
+        try {
+            await logout();
+            router.push("/login");
+        } catch (error) {
+            console.error(error);
+        }
+    }
 
     if (isLoading) return <Loader />;
     if (userError) return <RootView><ThemedText>Error: {userError.message}</ThemedText></RootView>;
@@ -87,14 +96,14 @@ export default function ProfilIndex() {
                                     </TouchableOpacity>
                                 </Link>
 
-                                <Link href="/logout" asChild>
-                                    <TouchableOpacity>
+                         
+                                    <TouchableOpacity onPress={() => handleLogout()}>
                                         <Row gap={8}>
                                             <Ionicons name="log-out-outline" size={24} color={colors.tint} />
                                             <ThemedText style={[styles.popoverText, { color: colors.tint }]}>Disconnect</ThemedText>
                                         </Row>
                                     </TouchableOpacity>
-                                </Link>
+                          
                                 </View>
                             </TouchableOpacity>
                         </Modal>
