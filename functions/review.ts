@@ -1,3 +1,5 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
 type ReviewProps = {
     description: string;
     gameId: number;
@@ -8,10 +10,12 @@ type ReviewProps = {
 const endpoint = process.env.EXPO_PUBLIC_API;
 
 export default async function addReview({ description, gameId, gameListId, statusId }: ReviewProps) {
+    const token = await AsyncStorage.getItem('token');
     try {
         const response = await fetch(endpoint + "/reviews", {
             method: "POST",
             headers: {
+                Authorization: `Bearer ${token}`,
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
@@ -24,7 +28,7 @@ export default async function addReview({ description, gameId, gameListId, statu
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
-        return await response.json();
+        return 'Review added successfully';
     } catch (error) {
         return error + 'An error occurred while adding the review';
     }

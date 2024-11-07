@@ -27,8 +27,7 @@ type Props = {
 }
 
 export function GameInList({ id, listId, name, description, image, status, userId, onPressDelete }: Props) {
-    console.log(status);
-    console.log(description);
+
     const [isUser, setIsUser] = useState(false);
     const colors = useThemeColors();
     const [modalVisible, setModalVisible] = useState(false);
@@ -83,11 +82,8 @@ export function GameInList({ id, listId, name, description, image, status, userI
                 statusId: statusId
             });
 
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
 
-            setSuccessMessage('Review successfully added');
+            setSuccessMessage(response);
             setErrorMessage('');
 
         } catch (error) {
@@ -108,8 +104,12 @@ export function GameInList({ id, listId, name, description, image, status, userI
                     <ThemedText variant="body">{name}</ThemedText>
                     <ThemedText variant="body2" style={{ color: colors.gray }}>{description ? description : ""}</ThemedText>
                     <Row style={{paddingTop: 24}}>
-                        <DynamicIcon icon={status ? status.icon : ""} color={status ? status.color : colors.gray} />
-                        <ThemedText variant="body2" style={{ color: status ? tailwindColorsToHex[status.color] : colors.gray }}>{status ? status.name : ""}</ThemedText>
+                        {status && (
+                            <>
+                                <DynamicIcon icon={status ? status.icon : ""} color={status ? status.color : colors.gray} />
+                                <ThemedText variant="body2" style={{ color: status ? tailwindColorsToHex[status.color] : colors.gray }}>{status ? status.name : ""}</ThemedText>
+                            </>
+                        )}
                     </Row>
                 </View>
                 {isUser && (

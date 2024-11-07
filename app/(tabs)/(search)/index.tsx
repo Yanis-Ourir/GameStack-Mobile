@@ -2,12 +2,10 @@ import { GameDetails } from "@/components/game/GameDetails";
 import SearchGameDetails from "@/components/game/SearchGameDetails";
 import Loader from "@/components/Loader";
 import { RootView } from "@/components/RootView";
-import { Row } from "@/components/Row";
 import { SearchNavigation } from "@/components/search/SearchNavigation";
 import { ThemedText } from "@/components/ThemedText";
 import { findTopTenGames, GameProps } from "@/functions/game";
 import { useThemeColors } from "@/hooks/useThemeColors";
-import { Link } from "expo-router";
 import { useEffect, useState } from "react";
 import { FlatList, StyleSheet, TextInput, View } from "react-native";
 
@@ -46,6 +44,7 @@ export default function Search() {
     return (
         <RootView>
             <SearchNavigation/>
+            
             <View style={{borderBottomWidth: 1, borderColor: colors.gray}}>
                 <TextInput 
                     placeholder="Search for games, lists, or users"

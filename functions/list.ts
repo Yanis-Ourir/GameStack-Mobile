@@ -1,6 +1,7 @@
 import { GameReviewProps } from "@/components/game/GameReview";
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
 import { UserProps } from "./user";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export type ListProps = {
     id: string;
@@ -62,6 +63,7 @@ export function findListById(id: string[] | string): UseQueryResult<ListDetailsP
 }
 
 export async function createList(name: string, description: string, isPrivate: boolean, image: string | null, userId: string): Promise<string> {
+    const token = await AsyncStorage.getItem('token');
 
     const formData = new FormData();
     formData.append('name', name);
@@ -93,6 +95,7 @@ export async function createList(name: string, description: string, isPrivate: b
         const response = await fetch(`${endpoint}/game-lists`, {
             method: 'POST',
             headers: {
+                Authorization: `Bearer ${token}`,
                 'Content-Type': 'multipart/form-data',
             },
             body: formData,
@@ -126,11 +129,12 @@ export async function findListAndCheckIfGameIsIn(userId: string,gameId: number):
 }
 
 export async function addGameToList(listId: string, gameId: number) {
-    console.log('addGameToList', listId, gameId);
+    const token = await AsyncStorage.getItem('token');
     try {
         const response = await fetch(`${endpoint}/game-lists/add-game`, {
             method: 'POST',
             headers: {
+                Authorization: `Bearer ${token}`,
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
@@ -147,11 +151,12 @@ export async function addGameToList(listId: string, gameId: number) {
 }
 
 export async function removeGameFromList(gameId: number, listId: string): Promise<{ success: boolean; message: string }> {
-    console.log(listId, gameId);
+    const token = await AsyncStorage.getItem('token');
     try {
         const response = await fetch(`${endpoint}/game-lists/remove-game`, {
             method: 'DELETE',
             headers: {
+                Authorization: `Bearer ${token}`,
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({

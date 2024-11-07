@@ -1,5 +1,6 @@
 import { PlatformsProps, StatusProps } from "@/components/game/GameReview";
 import { UserProps } from "./user";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export type EvaluationProps = {
     id: number;
@@ -24,10 +25,12 @@ export type Evaluation = {
 const endpoint = process.env.EXPO_PUBLIC_API;
 
 export async function createEvaluation({ rating, description, gameTime, gameId, platforms, statusId, userId }: Evaluation) {
+    const token = await AsyncStorage.getItem('token');
     try {
         const response = await fetch(endpoint + '/evaluations', {
             method: 'POST',
             headers: {
+                Authorization: `Bearer ${token}`,
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
@@ -45,9 +48,9 @@ export async function createEvaluation({ rating, description, gameTime, gameId, 
             throw new Error('Network response was not ok');
         }
 
-        return 'Evaluation ajoutée avec succès !';
+        return 'Evaluation created successfully';
     } catch (error) {
         console.error(error);
-        return 'Erreur dans la création de votre évaluation. Veuillez réessayer.';
+        return 'An error occurred';
     }
 }

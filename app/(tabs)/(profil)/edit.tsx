@@ -69,6 +69,7 @@ export default function Edit() {
 
             setSuccessMessage(response);
             setErrorMessage('');
+            
         } catch (error: any) {
             setErrorMessage(error.message);
             setSuccessMessage('');

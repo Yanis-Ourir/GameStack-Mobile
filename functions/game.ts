@@ -61,8 +61,24 @@ export function findBySearch(search: string): UseQueryResult<GameProps[], Error>
     });
 }
 
-export async function findGamesRecommendation(): Promise<GameProps[]> {
-    const response = await fetch(endpoint + '/games/recommendation');
-    const data = await response.json();
-    return data.results;
+
+export async function findGamesRecommendation(userId: string): Promise<GameProps[] | string> {
+    try {
+        const response = await fetch(`${endpoint}/games/recommendation/${userId}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        });
+
+        if(!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        const data = response.json();
+        return data;
+        
+    } catch (error) {
+        console.error('Error:', error);
+        return "Error while fetching recommended games" + error;
+    }
 }

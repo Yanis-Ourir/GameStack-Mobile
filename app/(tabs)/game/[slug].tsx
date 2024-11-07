@@ -108,7 +108,7 @@ export default function Game() {
                         onPress={() => fetchListsAndOpenModal()}
                         style={styles.addToListButton}
                     >
-                        <ThemedText style={styles.addToListText}>+ Ajouter à une liste</ThemedText>
+                        <ThemedText style={styles.addToListText}>+ Add to list</ThemedText>
                     </TouchableOpacity>
 
                     <Modal
@@ -119,7 +119,7 @@ export default function Game() {
                     >
                         <View style={styles.modalOverlay}>
                             <View style={[styles.modalContent, { backgroundColor: colors.backgroundColor }]}>
-                                <ThemedText variant="subtitle" style={{ marginBottom: 12 }}>Sélectionnez une liste</ThemedText>
+                                <ThemedText variant="subtitle" style={{ marginBottom: 12 }}>Select a list</ThemedText>
                                 {loadingLists && <Loader />}
                                 <View style={{ height: 70 }}>
                                     {errorMessage && (
@@ -143,7 +143,7 @@ export default function Game() {
                                     </TouchableOpacity>
                                 ))}
                                 <TouchableOpacity onPress={() => setModalVisible(false)} style={styles.closeModalButton}>
-                                    <ThemedText style={styles.closeModalText}>Fermer</ThemedText>
+                                    <ThemedText style={styles.closeModalText}>close</ThemedText>
                                 </TouchableOpacity>
                             </View>
                         </View>
@@ -151,12 +151,14 @@ export default function Game() {
                 </View>
 
                 <View style={styles.commentsSection}>
-                    <ThemedText variant="headline">Reviews</ThemedText>
-                    <Link href={`/evaluation/${data.slug}`} asChild>
-                        <TouchableOpacity style={styles.addCommentButton}>
-                            <ThemedText variant="body" style={styles.addCommentText}>Add a Review</ThemedText>
-                        </TouchableOpacity>
-                    </Link>
+                    <Row style={{alignItems: "center", justifyContent: "space-between"}}>
+                        <ThemedText variant="headline">Evaluations</ThemedText>
+                        <Link href={`/evaluation/${data.slug}`} asChild>
+                            <TouchableOpacity style={styles.addCommentButton}>
+                                <ThemedText variant="body" style={[styles.addCommentText]}> + Evaluation</ThemedText>
+                            </TouchableOpacity>
+                        </Link>
+                    </Row>
                     {data.evaluations && data.evaluations.map(evaluation => (
                         <EvaluationDetails
                             key={evaluation.id}
@@ -203,9 +205,10 @@ const styles = StyleSheet.create({
     addCommentButton: {
         marginVertical: 10,
         backgroundColor: '#C31432',
-        paddingVertical: 12,
+        paddingVertical: 8,
         borderRadius: 50,
         alignItems: 'center',
+        width: "40%",
     },
     addCommentText: {
         color: '#fff',

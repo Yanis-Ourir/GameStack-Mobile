@@ -1,3 +1,5 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
 export type UserProps = {
     id: string;
     pseudo: string;
@@ -45,7 +47,7 @@ export async function findUserById(id: string): Promise<UserProps | undefined> {
 }
 
 export async function editUser({ profilPseudo, profilDescription, profilImage, userId} : UpdateProfil): Promise<string> {
-
+    const token = await AsyncStorage.getItem('token');
     const formData = new FormData();
     formData.append('pseudo', profilPseudo);
     formData.append('description', profilDescription);
@@ -73,6 +75,10 @@ export async function editUser({ profilPseudo, profilDescription, profilImage, u
     try {
         const response = await fetch(`${endpoint}/users/${userId}`, {
             method: 'POST',
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'multipart/form-data',
+            },
             body: formData,
         });
 

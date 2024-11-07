@@ -26,7 +26,7 @@ export function ListDetails({ id, title, description, gameCount, image, ...rest 
                             <ThemedText variant="body2" style={{color: colors.gray}}>{description}</ThemedText>
                         </View>
                         <View>
-                            <ThemedText variant="body2" style={{color: colors.gray}}>Jeux</ThemedText>
+                            <ThemedText variant="body2" style={{color: colors.gray}}>Games</ThemedText>
                             <ThemedText variant="subtitle" style={{color: colors.tint, textAlign: "center"}}>{gameCount}</ThemedText>
                         </View>
                     </Row>
@@ -38,7 +38,7 @@ export function ListDetails({ id, title, description, gameCount, image, ...rest 
 const styles = StyleSheet.create({
     gameListCard: {
         borderRadius: 12,
-        padding: 10,
+        padding: 16,
         alignItems: 'center',
         borderBottomWidth: 1,
         borderBottomColor: '#333',

@@ -40,18 +40,17 @@ export default function List() {
         try {
             await removeGameFromList(gameId, listId);
             setGames(data.games.filter(game => game.id !== gameId));
-            setSuccessMessage('Jeux supprimé avec succès');
+            setSuccessMessage('Game deleted successfully');
             setErrorMessage('');
 
         } catch (error) {
-            setErrorMessage('Erreur lors de la suppression du jeu');
+            setErrorMessage('Error while deleting the game');
             setSuccessMessage('');
         }
     }
 
-    console.log(data.games[0].review);
-
     
+
 
     return (
         <RootView>
@@ -80,22 +79,26 @@ export default function List() {
 
             <FlatList
                 data={games ? games : data.games}
-                keyExtractor={item => item.id.toString()}
-                renderItem={({ item }) => (
-                   
-                    <GameInList
+                keyExtractor={(item) => item.id.toString()}
+                renderItem={({ item }) => {
+                    
+                    const review = Object.values(item.review)[0] || {}; 
+
+                    return (
+                        <GameInList
                             id={item.id}
-                            listId = {data.id}
+                            listId={data.id}
                             name={item.name}
-                            description={item.review[0]?.description}
+                            description={review.description} 
                             image={item.image}
-                            status={item.review[0]?.status}
+                            status={review.status} 
                             userId={data.user.id}
                             onPressDelete={() => handleDelete(item.id, data.id)}
-                    />
-                 
-                )}
+                        />
+                    );
+                }}
             />
+
         </RootView>
     );
 }

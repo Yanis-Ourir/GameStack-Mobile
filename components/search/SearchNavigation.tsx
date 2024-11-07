@@ -10,11 +10,11 @@ export function SearchNavigation() {
                 <Link href="/">
                     <ThemedText variant="subtitle">Games</ThemedText>
                 </Link>
-                <Link href="/list">
+                <Link href="/(search)/list">
                     <ThemedText variant="subtitle">Lists</ThemedText>
                 </Link>
-                <Link href="/">
-                    <ThemedText variant="subtitle">Users</ThemedText>
+                <Link href="/(search)/recommendation">
+                    <ThemedText variant="subtitle">Reco</ThemedText>
                 </Link>
             </Row>
         </>

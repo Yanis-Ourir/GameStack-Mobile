@@ -40,6 +40,7 @@ export default function TabLayout() {
                     tabBarIcon: ({ color, focused }) => (
                         <Ionicons name={focused ? 'person' : 'person-outline'} color={color} size={24} />
                     ),
+                    unmountOnBlur: true,
                 }}
             />
 
@@ -67,7 +68,8 @@ export default function TabLayout() {
             <Tabs.Screen
                 name="game/[slug]"
                 options={{
-                    href: null
+                    href: null,
+                    unmountOnBlur: true
                 }}
             /> 
 
@@ -84,6 +86,8 @@ export default function TabLayout() {
                     href: null
                 }}
             />
+
+
         </Tabs>
     );
 }

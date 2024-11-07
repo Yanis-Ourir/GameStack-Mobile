@@ -118,10 +118,10 @@ export default function ProfilIndex() {
 
                 <View style={styles.tabContainer}>
                     <TouchableOpacity style={styles.tab}>
-                        <ThemedText>Listes</ThemedText>
+                        <ThemedText>Lists</ThemedText>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.tab}>
-                        <ThemedText>Évaluations</ThemedText>
+                        <ThemedText>Evaluations</ThemedText>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.tab}>
                         <ThemedText>Favoris</ThemedText>
@@ -132,7 +132,7 @@ export default function ProfilIndex() {
                 </View>
 
                 <View style={styles.searchContainer}>
-                    <ThemedText variant="body" style={{ color: colors.gray }}>🔍 Chercher une liste</ThemedText>
+                    <ThemedText variant="body" style={{ color: colors.gray }}>🔍 Search a list</ThemedText>
                 </View>
 
 
@@ -153,7 +153,7 @@ export default function ProfilIndex() {
                 </View>
                 <Link href="/list/new" asChild>
                     <TouchableOpacity style={styles.newListButton}>
-                        <Text style={styles.newListText}>+ Nouvelle liste</Text>
+                        <Text style={styles.newListText}>+ New list</Text>
                     </TouchableOpacity>
                 </Link>
             </ScrollView>
