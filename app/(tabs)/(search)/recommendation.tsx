@@ -64,7 +64,7 @@ export default function Recommendation() {
                 <ThemedText>Error: {error.message}</ThemedText>
             )}
 
-            {games && games.map((game) => (
+            {games && games.length > 0 ? games.map((game) => (
                 <GameDetails
                     key={game.id}
                     id={game.id}
@@ -76,7 +76,9 @@ export default function Recommendation() {
                     image={game.image}
                     slug={game.slug}
                 />
-            ))}
+            )) : (
+                <ThemedText style={{alignSelf: "center", paddingTop: 12}}>No recommendations yet! Rate some games to get started.</ThemedText>
+            )}
         </RootView>
     )
 }

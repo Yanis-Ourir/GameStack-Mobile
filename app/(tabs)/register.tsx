@@ -1,18 +1,38 @@
 import { ButtonInput } from "@/components/ButtonInput";
 import { CustomInput } from "@/components/CustomInput";
 import { RootView } from "@/components/RootView";
+import { Row } from "@/components/Row";
 import { ThemedText } from "@/components/ThemedText";
+import { registerRequest } from "@/functions/auth";
 import { useThemeColors } from "@/hooks/useThemeColors";
-import { Link } from "expo-router";
+import { Link, router } from "expo-router";
 import { useState } from "react";
 import { Image, StyleSheet, TextInput, View } from "react-native";
 
 export default function Register() {
     const colors = useThemeColors();
+    const [pseudo, setPseudo] = useState("")
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [error, setError] = useState("");
 
     // https://www.youtube.com/watch?v=h_vHui2QgnU
+
+    async function handleRegister() {
+        console.log(pseudo, email, password);
+        try {
+            const response = await registerRequest(pseudo, email, password);
+            if(response === 'Registration successful') {
+                router.push('/login');
+            } else{
+                setError(response);
+            }
+        } catch(error) {
+            setError('Error while trying to register');
+            console.error(error);
+        }
+    }
+
     return (
         <RootView>
             <Image source={require("@/assets/images/place_holder_logo.png")} style={styles.logo} />
@@ -22,8 +42,8 @@ export default function Register() {
                 <View>
                     <ThemedText>Pseudo : </ThemedText>
                     <TextInput
-                        value={email}
-                        onChangeText={setEmail}
+                        value={pseudo}
+                        onChangeText={setPseudo}
                         style={[styles.input, { borderColor: colors.grayLight, backgroundColor: colors.inputBackground }]}
                         autoCorrect={false}
                         autoCapitalize="none"
@@ -37,6 +57,8 @@ export default function Register() {
                         style={[styles.input, { borderColor: colors.grayLight, backgroundColor: colors.inputBackground }]}
                         autoCorrect={false}
                         autoCapitalize="none"
+                        keyboardType="email-address"
+                        keyboardAppearance="dark"
                     />
                 </View>
                 <View>
@@ -52,10 +74,12 @@ export default function Register() {
                 </View>
 
         
-                <ButtonInput label="Register" onPress={() => { }} style={[styles.button, { backgroundColor: colors.redInput }]} />
-                <Link href="/login">
-                    <ThemedText style={{ color: colors.gray }}>Already have an account ? </ThemedText>
-                </Link>
+                <ButtonInput label="Register" onPress={() => handleRegister()} style={[styles.button, { backgroundColor: colors.redInput }]} />
+                    
+                    <Row style={{justifyContent: "center"}}>
+                        <ThemedText style={{ color: colors.gray }}>Already have an account ? </ThemedText>
+                        <Link href="/login" style={{color: colors.tint}}>Login</Link>
+                    </Row>
             </View>
 
 

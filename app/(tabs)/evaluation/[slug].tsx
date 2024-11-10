@@ -66,7 +66,7 @@ export default function Review() {
         }
 
         try {
-            const evaluation = createEvaluation({
+            const evaluation = await createEvaluation({
                 rating: rating,
                 platforms: platforms,
                 gameTime: hoursPlayed.toString(),
@@ -76,7 +76,12 @@ export default function Review() {
                 userId: token.id,
             });
 
-            setSuccessMessage(await evaluation);
+            if(evaluation === 'An error occurred') { 
+                setErrorWhileCreating(evaluation);
+                return;
+            }
+
+            setSuccessMessage(evaluation);
 
             resetAllStates();
 
@@ -123,7 +128,7 @@ export default function Review() {
                     </Row>
                 </View>
 
-                <View style={{height: 60}}>
+                <View style={{height: 70}}>
                     {errorWhileCreating && (
                         <ErrorMessage message={errorWhileCreating} />
                     )}

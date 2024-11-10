@@ -139,7 +139,7 @@ export function GameInList({ id, listId, name, description, image, status, userI
                                     <View style={[styles.modalView, {backgroundColor: colors.backgroundColor}]}>
                                     <ThemedText variant="subtitle">Edit {name}</ThemedText>
 
-                                        <View style={{ height: 70, paddingTop: 12 }}>
+                                        <View style={{ height: 80, paddingTop: 4 }}>
                                             {errorMessage && (
                                                 <ErrorMessage message={errorMessage} />
                                             )}

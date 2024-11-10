@@ -67,5 +67,31 @@ export async function logout() {
 }
 
 
+export async function registerRequest(pseudoValue: string, emailValue: string, passwordValue: string): Promise<string> {
+    try {
+        const response = await fetch(`${endpoint}/register`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                pseudo: pseudoValue,
+                email: emailValue,
+                password: passwordValue
+            }),
+        });
 
+        const data = await response.json();
+
+        if(data.errors) {
+            return data.errors.password;
+        }
+
+        AsyncStorage.setItem('success', data.success);
+        return 'Registration successful';
+    } catch (error) {
+        console.error('Error:', error);
+        return "Error while trying to register" + error;
+    }
+}
 

@@ -2,21 +2,34 @@ import { ButtonInput } from "@/components/ButtonInput";
 import { CustomInput } from "@/components/CustomInput";
 import { RootView } from "@/components/RootView";
 import { Row } from "@/components/Row";
+import SuccessMessage from "@/components/SuccessMessage";
 import { ThemedText } from "@/components/ThemedText";
 import { login } from "@/functions/auth";
 import { useThemeColors } from "@/hooks/useThemeColors";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Link, useRouter } from "expo-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Image, StyleSheet, TextInput, View } from "react-native";
 
 export default function Login() {
     const router = useRouter();
     const colors = useThemeColors();
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+    const [email, setEmail] = useState<string>("");
+    const [password, setPassword] = useState<string>("");
+    const [successRegister, setSuccessRegister] = useState<string>("");
+
+    useEffect(() => {
+        async function checkRegistration() {
+            const registration = await AsyncStorage.getItem('success');
+            if (registration) {
+                setSuccessRegister("Registration successful");
+                await AsyncStorage.removeItem('success');
+            }
+        }
+        checkRegistration();
+    }, [])
 
     function handleSubmit() {
-        console.log("Login with email : ", email, " and password : ", password);
         try {
             login(email, password);
             router.push("/");
@@ -30,6 +43,8 @@ export default function Login() {
         <RootView>
             <Image source={require("@/assets/images/place_holder_logo.png")} style={styles.logo} />
             <ThemedText variant="headline" style={{alignSelf: "center"}}>Login</ThemedText>
+
+            {successRegister && <SuccessMessage message={successRegister}/>}
 
             <View style={styles.form}>
                 <View>

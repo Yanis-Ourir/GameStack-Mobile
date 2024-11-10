@@ -140,16 +140,19 @@ export default function ProfilIndex() {
                     {isLoading && <ThemedText>Loading...</ThemedText>}
                     {userError && <ThemedText>Error: {userError}</ThemedText>}
 
-                    {data && data.map((list) => (
-                        <ListDetails
-                            key={list.id}
-                            id={list.id}
-                            title={list.name}
-                            description={list.description}
-                            gameCount={list.games}
-                            image={list.image}
-                        />
-                    ))}
+                    {data && data.length > 0 ? data.map((list) => (
+                            <ListDetails
+                                key={list.id}
+                                id={list.id}
+                                title={list.name}
+                                description={list.description}
+                                gameCount={list.games}
+                                image={list.image}
+                            />
+                    )
+                    ) : (
+                        <ThemedText>There is no list yet !</ThemedText>
+                    )}
                 </View>
                 <Link href="/list/new" asChild>
                     <TouchableOpacity style={styles.newListButton}>
